@@ -49,6 +49,10 @@ anchor/test-ledger/
 server/dist/
 server/node_modules/
 
+# Android APK build artifacts
+android-apk/.gradle/
+android-apk/build/
+
 # Secrets
 .env
 .env.local
