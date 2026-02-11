@@ -1,0 +1,19 @@
+{
+  "name": "battle-tanks-server",
+  "version": "0.1.0",
+  "description": "Battle Tanks: Seeker Edition — Multiplayer server",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "ws": "^8.16.0"
+  },
+  "devDependencies": {
+    "@types/ws": "^8.5.10",
+    "typescript": "^5.3.0",
+    "ts-node": "^10.9.0"
+  }
+}
