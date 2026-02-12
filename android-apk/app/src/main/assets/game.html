@@ -7,68 +7,75 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
 html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Courier New',monospace;color:#fcfcfc}
-#menu,#game-screen,#result-screen{position:absolute;top:0;left:0;width:100%;height:100%;display:none;flex-direction:column}
-#menu{display:flex;align-items:center;justify-content:center}
-.title{font-size:28px;font-weight:bold;color:#FCE83A;letter-spacing:4px;text-align:center}
-.subtitle{font-size:12px;color:#3CBF3C;letter-spacing:6px;margin-top:4px;text-align:center}
-.title-line{width:200px;height:2px;background:#FCE83A;margin:12px auto}
-.section{width:90%;max-width:360px;margin:10px auto}
+.screen{position:absolute;top:0;left:0;width:100%;height:100%;display:none;flex-direction:column}
+#menu{display:flex;align-items:center;justify-content:center;overflow-y:auto}
+.menu-inner{width:100%;max-width:400px;padding:20px 16px;padding-top:env(safe-area-inset-top,20px);padding-bottom:env(safe-area-inset-bottom,20px)}
+.title{font-size:7vw;font-weight:bold;color:#FCE83A;letter-spacing:4px;text-align:center}
+.subtitle{font-size:3vw;color:#3CBF3C;letter-spacing:6px;margin-top:4px;text-align:center}
+.title-line{width:60%;height:2px;background:#FCE83A;margin:12px auto}
+.section{margin:14px 0}
 .section-title{font-size:11px;color:#888;letter-spacing:2px;margin-bottom:6px}
 .row{display:flex;gap:6px;flex-wrap:wrap}
-.btn{padding:10px 14px;border:2px solid #444;background:transparent;color:#888;font-family:'Courier New',monospace;font-size:12px;font-weight:bold;border-radius:6px;cursor:pointer;text-align:center;flex:1;min-width:60px}
+.btn{padding:10px 12px;border:2px solid #444;background:transparent;color:#888;font-family:'Courier New',monospace;font-size:12px;font-weight:bold;border-radius:6px;cursor:pointer;text-align:center;flex:1;min-width:55px;transition:all .15s}
+.btn:active{opacity:0.7}
 .btn.active{border-color:#FCE83A;color:#FCE83A;background:#2a2000}
 .btn.green{border-color:#3CBF3C;color:#3CBF3C;background:#002a00}
-.play-btn{width:90%;max-width:360px;padding:16px;border:none;border-radius:10px;background:#3CBF3C;color:#fff;font-family:'Courier New',monospace;font-size:20px;font-weight:bold;letter-spacing:4px;cursor:pointer;margin:16px auto 0}
-.play-btn:active{background:#00a800}
-.play-sub{font-size:12px;color:#FCE83A;margin-top:4px}
+.big-btn{width:100%;padding:18px;border:none;border-radius:10px;color:#fff;font-family:'Courier New',monospace;font-size:18px;font-weight:bold;letter-spacing:3px;cursor:pointer;margin-top:10px;text-align:center}
+.big-btn:active{opacity:0.8}
+.big-btn.green{background:#3CBF3C}
+.big-btn.blue{background:#0058F8}
+.big-btn.gray{background:#333;color:#888;margin-top:8px;font-size:14px;letter-spacing:2px}
+.play-sub{font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px}
 canvas{display:block;image-rendering:pixelated;image-rendering:crisp-edges}
-#hud{height:36px;background:#1c1c1c;display:flex;align-items:center;justify-content:space-between;padding:0 12px;font-size:12px}
-#hud .lives{display:flex;gap:3px}
-.life-box{width:10px;height:10px;border-radius:2px}
-#controls{display:flex;justify-content:space-between;align-items:center;padding:10px 20px;background:#1c1c1c;flex-shrink:0}
-#dpad{width:140px;height:140px;position:relative}
-.d-btn{position:absolute;width:44px;height:44px;background:#333;border:1px solid #555;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;cursor:pointer}
+#hud{height:40px;background:#1c1c1c;display:flex;align-items:center;justify-content:space-between;padding:0 14px;font-size:13px;flex-shrink:0}
+#hud2{height:30px;background:#111;display:flex;align-items:center;justify-content:space-between;padding:0 14px;font-size:11px;flex-shrink:0}
+.lives{display:flex;gap:3px;align-items:center}
+.life-box{width:12px;height:12px;border-radius:2px}
+#canvas-wrap{flex:1;display:flex;align-items:center;justify-content:center;background:#000;overflow:hidden}
+#controls{display:flex;justify-content:space-between;align-items:center;padding:12px 24px;background:#1c1c1c;flex-shrink:0;padding-bottom:max(12px,env(safe-area-inset-bottom))}
+#dpad{width:150px;height:150px;position:relative}
+.d-btn{position:absolute;width:48px;height:48px;background:#333;border:1px solid #555;display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;border-radius:4px}
 .d-btn:active{background:#555}
-.d-up{top:0;left:48px;border-radius:6px 6px 0 0}
-.d-down{bottom:0;left:48px;border-radius:0 0 6px 6px}
-.d-left{top:48px;left:0;border-radius:6px 0 0 6px}
-.d-right{top:48px;right:0;border-radius:0 6px 6px 0}
-.d-center{position:absolute;top:48px;left:48px;width:44px;height:44px;background:#222}
-#fire-btn{width:70px;height:70px;border-radius:50%;background:#FC0000;border:3px solid #cc0000;color:#fff;font-family:'Courier New',monospace;font-size:14px;font-weight:bold;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.d-up{top:0;left:51px}
+.d-down{bottom:0;left:51px}
+.d-left{top:51px;left:0}
+.d-right{top:51px;right:0}
+.d-center{position:absolute;top:51px;left:51px;width:48px;height:48px;background:#222;border-radius:4px}
+#fire-btn{width:80px;height:80px;border-radius:50%;background:#FC0000;border:3px solid #cc0000;color:#fff;font-family:'Courier New',monospace;font-size:15px;font-weight:bold;display:flex;align-items:center;justify-content:center}
 #fire-btn:active{background:#cc0000}
-#result-screen{align-items:center;justify-content:center}
-.result-banner{width:85%;padding:20px;border-radius:12px;text-align:center;margin-bottom:20px}
+#countdown-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);display:flex;align-items:center;justify-content:center;z-index:10}
+#countdown-text{font-size:80px;font-weight:bold;color:#FCE83A}
+.result-banner{width:90%;max-width:360px;padding:24px;border-radius:12px;text-align:center;margin-bottom:24px}
 .result-banner.win{background:#003300;border:2px solid #3CBF3C}
 .result-banner.lose{background:#330000;border:2px solid #FC0000}
 .result-banner.draw{background:#1a1a00;border:2px solid #FCE83A}
-.result-title{font-size:36px;font-weight:bold;letter-spacing:6px}
-.stats{width:85%;background:#111;border-radius:8px;padding:14px;margin-bottom:16px}
-.stat-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #222;font-size:13px}
-.stat-label{color:#888}
-.stat-val{font-weight:bold}
-.r-btn{width:85%;padding:14px;border-radius:8px;font-family:'Courier New',monospace;font-size:16px;font-weight:bold;letter-spacing:3px;cursor:pointer;text-align:center;margin-bottom:8px;border:none;color:#fff}
+.result-title{font-size:38px;font-weight:bold;letter-spacing:6px}
+.stats{width:90%;max-width:360px;background:#111;border-radius:8px;padding:14px;margin-bottom:20px}
+.stat-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #222;font-size:13px}
+.stat-label{color:#888}.stat-val{font-weight:bold}
+.r-btn{width:90%;max-width:360px;padding:16px;border-radius:8px;font-family:'Courier New',monospace;font-size:16px;font-weight:bold;letter-spacing:3px;text-align:center;margin-bottom:8px;border:none;color:#fff;cursor:pointer}
 .r-btn.primary{background:#3CBF3C}
 .r-btn.secondary{background:transparent;border:2px solid #444;color:#888}
-.version{color:#333;font-size:10px;margin-top:20px}
+.version{color:#333;font-size:10px;margin-top:24px;text-align:center}
+.pause-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:20;gap:16px}
+.pause-title{font-size:32px;font-weight:bold;color:#FCE83A;letter-spacing:4px;margin-bottom:16px}
 </style>
 </head>
 <body>
 
-<!-- ═══════════════ MENU ═══════════════ -->
-<div id="menu">
- <div style="width:100%;padding:16px">
+<!-- MENU -->
+<div class="screen" id="menu">
+ <div class="menu-inner">
   <div class="title">BATTLE TANKS</div>
   <div class="subtitle">SEEKER EDITION</div>
   <div class="title-line"></div>
 
-  <div class="section">
-   <div class="section-title">MODE</div>
-   <div class="row">
-    <div class="btn active" id="btn-pve" onclick="setMode('pve')">VS BOT</div>
-    <div class="btn" id="btn-pvp" onclick="setMode('pvp')">PVP ONLINE</div>
-   </div>
-  </div>
+  <!-- SINGLE PLAYER — main action -->
+  <button class="big-btn green" onclick="startSingle()">
+   SINGLE PLAYER<br><span class="play-sub">Play vs Bot — Free</span>
+  </button>
 
+  <!-- BOT DIFFICULTY -->
   <div class="section" id="diff-section">
    <div class="section-title">DIFFICULTY</div>
    <div class="row">
@@ -78,6 +85,7 @@ canvas{display:block;image-rendering:pixelated;image-rendering:crisp-edges}
    </div>
   </div>
 
+  <!-- MAP SELECT -->
   <div class="section">
    <div class="section-title">MAP</div>
    <div class="row">
@@ -89,263 +97,221 @@ canvas{display:block;image-rendering:pixelated;image-rendering:crisp-edges}
    </div>
   </div>
 
-  <div class="section">
-   <div class="section-title">BET</div>
+  <!-- PVP ONLINE (future) -->
+  <button class="big-btn blue" onclick="startPVP()" style="opacity:0.4;pointer-events:none">
+   PVP ONLINE<br><span class="play-sub">Coming soon — Connect Wallet</span>
+  </button>
+
+  <!-- BET SECTION (future, disabled) -->
+  <div class="section" style="opacity:0.3">
+   <div class="section-title">BET (requires wallet)</div>
    <div class="row">
-    <div class="btn active" id="bet-0" onclick="setBet(0)">0.005</div>
-    <div class="btn" id="bet-1" onclick="setBet(1)">0.05</div>
-    <div class="btn" id="bet-2" onclick="setBet(2)">0.5</div>
-    <div class="btn" id="bet-3" onclick="setBet(3)">5.0</div>
+    <div class="btn active" id="bet-0">0.005</div>
+    <div class="btn" id="bet-1">0.05</div>
+    <div class="btn" id="bet-2">0.5</div>
+    <div class="btn" id="bet-3">5.0</div>
    </div>
   </div>
 
-  <button class="play-btn" onclick="startGame()">
-   PLAY<br><span class="play-sub" id="bet-display">0.005 SOL</span>
-  </button>
-  <div class="version">v0.1.0 — Solana Seeker</div>
+  <div class="version">v0.2.0 — Solana Seeker | API 34</div>
  </div>
 </div>
 
-<!-- ═══════════════ GAME ═══════════════ -->
-<div id="game-screen">
+<!-- GAME -->
+<div class="screen" id="game-screen">
  <div id="hud">
-  <div><span style="color:#3CBF3C;font-weight:bold" id="hud-mode">MEDIUM</span></div>
-  <div id="hud-timer" style="font-weight:bold">5:00</div>
-  <div><span style="color:#FCE83A;font-weight:bold" id="hud-bet">0.005 SOL</span></div>
+  <span style="color:#3CBF3C;font-weight:bold" id="hud-mode">MEDIUM</span>
+  <span id="hud-timer" style="font-weight:bold;font-size:16px">5:00</span>
+  <span style="color:#666;font-size:11px" id="hud-map">Classic</span>
  </div>
- <div id="hud2" style="height:28px;background:#111;display:flex;align-items:center;justify-content:space-between;padding:0 12px;font-size:11px">
+ <div id="hud2">
   <div style="display:flex;align-items:center;gap:6px"><span style="color:#FCE83A">YOU</span><div id="p1-lives" class="lives"></div></div>
-  <div style="display:flex;align-items:center;gap:6px"><div id="p2-lives" class="lives"></div><span style="color:#3CBF3C">ENEMY</span></div>
+  <div style="display:flex;align-items:center;gap:6px"><div id="p2-lives" class="lives"></div><span style="color:#3CBF3C">BOT</span></div>
  </div>
- <div id="canvas-wrap" style="flex:1;display:flex;align-items:center;justify-content:center;background:#000">
-  <canvas id="c"></canvas>
- </div>
+ <div id="canvas-wrap"><canvas id="c"></canvas></div>
  <div id="controls">
   <div id="dpad">
-   <div class="d-btn d-up" data-dir="up">▲</div>
-   <div class="d-btn d-left" data-dir="left">◀</div>
+   <div class="d-btn d-up" data-dir="up">&#9650;</div>
+   <div class="d-btn d-left" data-dir="left">&#9664;</div>
    <div class="d-center"></div>
-   <div class="d-btn d-right" data-dir="right">▶</div>
-   <div class="d-btn d-down" data-dir="down">▼</div>
+   <div class="d-btn d-right" data-dir="right">&#9654;</div>
+   <div class="d-btn d-down" data-dir="down">&#9660;</div>
   </div>
   <div id="fire-btn">FIRE</div>
  </div>
- <div id="countdown-overlay" style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;z-index:10">
-  <div id="countdown-text" style="font-size:72px;font-weight:bold;color:#FCE83A">3</div>
+ <div id="countdown-overlay"><div id="countdown-text">3</div></div>
+ <div class="pause-overlay" id="pause-overlay" style="display:none">
+  <div class="pause-title">PAUSED</div>
+  <button class="big-btn green" onclick="resumeGame()" style="width:200px">RESUME</button>
+  <button class="big-btn gray" onclick="quitGame()" style="width:200px">QUIT</button>
  </div>
 </div>
 
-<!-- ═══════════════ RESULT ═══════════════ -->
-<div id="result-screen">
- <div class="result-banner" id="result-banner">
-  <div class="result-title" id="result-title">VICTORY!</div>
- </div>
+<!-- RESULT -->
+<div class="screen" id="result-screen" style="align-items:center;justify-content:center">
+ <div class="result-banner" id="result-banner"><div class="result-title" id="result-title">VICTORY!</div></div>
  <div class="stats">
   <div class="stat-row"><span class="stat-label">Duration</span><span class="stat-val" id="r-duration">0:00</span></div>
   <div class="stat-row"><span class="stat-label">Your Kills</span><span class="stat-val" id="r-kills">0</span></div>
   <div class="stat-row"><span class="stat-label">Enemy Kills</span><span class="stat-val" id="r-ekills">0</span></div>
  </div>
- <button class="r-btn primary" onclick="startGame()">PLAY AGAIN</button>
+ <button class="r-btn primary" onclick="startSingle()">PLAY AGAIN</button>
  <button class="r-btn secondary" onclick="showMenu()">MENU</button>
 </div>
 
 <script>
-// ══════════════════════════════════════════════
-// BATTLE TANKS: SEEKER EDITION — FULL ENGINE
-// ══════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+// BATTLE TANKS: SEEKER EDITION v0.2
+// Full game engine — Seeker compatible (API 24+)
+// ══════════════════════════════════════════════════════
 
-// ── CONSTANTS ─────────────────────────────────
 const T=16,COLS=13,ROWS=13,MW=COLS*T,MH=ROWS*T;
 const MATCH_TIME=300000;
 const TANK_SPD=1,BULLET_SPD=3,BULLET_FAST=5;
 const MAX_LIVES=3,SPAWN_INV=3000,BULLET_CD=500;
 const PU_INTERVAL=15000,HELMET_T=10000,TIMER_T=5000,SHOVEL_T=15000;
 const DIR={UP:0,RIGHT:1,DOWN:2,LEFT:3};
-const TILE={EMPTY:0,BRICK:1,STEEL:2,FOREST:3,WATER:4,BASE:5,BASE_X:6};
+const TILE={E:0,BR:1,ST:2,FO:3,WA:4,BA:5,BX:6};
 const PU_TYPES=['star','helmet','grenade','timer','shovel','tank'];
 const C={BK:'#000',WH:'#fcfcfc',P1:'#FCE83A',P1T:'#A46422',P1G:'#7C7C7C',P2:'#3CBF3C',P2T:'#0C8020',P2G:'#7C7C7C',
   BR:'#BC4430',BRD:'#8C2020',ST:'#C0C0C0',STD:'#808080',WA:'#3CBCFC',WAD:'#0078F8',FO:'#00A800',FOD:'#006800',
-  BA:'#FC9838',BAD:'#A45000',RED:'#FC0000',YEL:'#FCE83A',BLU:'#0058F8',HUD:'#1c1c1c'};
+  BA:'#FC9838',BAD:'#A45000',RED:'#FC0000',YEL:'#FCE83A'};
+const MAP_NAMES=['Classic','Fortress','Forest','River','Steel'];
 
-// ── MAPS ──────────────────────────────────────
 const MAPS=[
-// Classic
 [[0,0,0,0,0,0,5,0,0,0,0,0,0],[0,0,0,0,0,1,1,1,0,0,0,0,0],[0,1,1,0,0,1,2,1,0,0,1,1,0],[0,1,1,0,0,0,0,0,0,0,1,1,0],[0,0,0,0,1,0,0,0,1,0,0,0,0],[0,0,0,1,1,0,3,0,1,1,0,0,0],[0,0,0,0,0,0,3,0,0,0,0,0,0],[0,0,0,1,1,0,3,0,1,1,0,0,0],[0,0,0,0,1,0,0,0,1,0,0,0,0],[0,1,1,0,0,0,0,0,0,0,1,1,0],[0,1,1,0,0,1,2,1,0,0,1,1,0],[0,0,0,0,0,1,1,1,0,0,0,0,0],[0,0,0,0,0,0,5,0,0,0,0,0,0]],
-// Fortress
 [[0,0,0,0,0,0,5,0,0,0,0,0,0],[0,2,0,1,1,1,1,1,1,1,0,2,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],[1,1,0,2,0,1,0,1,0,2,0,1,1],[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,1,1,0,2,4,4,4,2,0,1,1,0],[0,0,0,0,0,4,4,4,0,0,0,0,0],[0,1,1,0,2,4,4,4,2,0,1,1,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],[1,1,0,2,0,1,0,1,0,2,0,1,1],[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,2,0,1,1,1,1,1,1,1,0,2,0],[0,0,0,0,0,0,5,0,0,0,0,0,0]],
-// Forest
 [[0,0,0,0,0,0,5,0,0,0,0,0,0],[0,3,3,0,1,0,0,0,1,0,3,3,0],[0,3,3,0,1,0,3,0,1,0,3,3,0],[0,0,0,0,0,0,3,0,0,0,0,0,0],[1,0,1,3,3,0,0,0,3,3,1,0,1],[0,0,0,3,0,0,2,0,0,3,0,0,0],[0,3,0,0,0,2,2,2,0,0,0,3,0],[0,0,0,3,0,0,2,0,0,3,0,0,0],[1,0,1,3,3,0,0,0,3,3,1,0,1],[0,0,0,0,0,0,3,0,0,0,0,0,0],[0,3,3,0,1,0,3,0,1,0,3,3,0],[0,3,3,0,1,0,0,0,1,0,3,3,0],[0,0,0,0,0,0,5,0,0,0,0,0,0]],
-// River
 [[0,0,0,0,0,0,5,0,0,0,0,0,0],[0,1,0,0,1,0,0,0,1,0,0,1,0],[0,1,0,0,1,0,1,0,1,0,0,1,0],[0,0,0,0,0,0,1,0,0,0,0,0,0],[4,4,4,0,0,4,4,4,0,0,4,4,4],[0,0,0,0,0,4,2,4,0,0,0,0,0],[1,0,1,0,0,0,0,0,0,0,1,0,1],[0,0,0,0,0,4,2,4,0,0,0,0,0],[4,4,4,0,0,4,4,4,0,0,4,4,4],[0,0,0,0,0,0,1,0,0,0,0,0,0],[0,1,0,0,1,0,1,0,1,0,0,1,0],[0,1,0,0,1,0,0,0,1,0,0,1,0],[0,0,0,0,0,0,5,0,0,0,0,0,0]],
-// Steel Maze
 [[0,0,0,0,0,0,5,0,0,0,0,0,0],[0,2,2,0,0,0,0,0,0,0,2,2,0],[0,0,0,0,2,1,1,1,2,0,0,0,0],[0,0,1,0,0,0,0,0,0,0,1,0,0],[2,0,1,0,2,0,1,0,2,0,1,0,2],[0,0,0,0,0,0,0,0,0,0,0,0,0],[0,1,0,1,0,2,0,2,0,1,0,1,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],[2,0,1,0,2,0,1,0,2,0,1,0,2],[0,0,1,0,0,0,0,0,0,0,1,0,0],[0,0,0,0,2,1,1,1,2,0,0,0,0],[0,2,2,0,0,0,0,0,0,0,2,2,0],[0,0,0,0,0,0,5,0,0,0,0,0,0]]
 ];
 
-// ── STATE ─────────────────────────────────────
-let cfg={mode:'pve',diff:'medium',mapIdx:0,bet:0.005};
-let bets=[0.005,0.05,0.5,5.0];
-let world,running=false,eid=0;
+// STATE
+let cfg={diff:'medium',mapIdx:0};
+let world,running=false,paused=false,eid=0;
 let input={up:false,down:false,left:false,right:false,fire:false};
-let canvas,ctx,scale,cw,ch;
+let canvas,ctx,scale;
 
-// ── MENU ──────────────────────────────────────
-function setMode(m){cfg.mode=m;
- document.getElementById('btn-pve').className='btn'+(m==='pve'?' active':'');
- document.getElementById('btn-pvp').className='btn'+(m==='pvp'?' active':'');
- document.getElementById('diff-section').style.display=m==='pve'?'block':'none';
-}
+// ── MENU ──────────────────────────────────
 function setDiff(d){cfg.diff=d;
- ['easy','medium','hard'].forEach(x=>{document.getElementById('btn-'+x).className='btn'+(x===d?' active green':'')});
-}
+ ['easy','medium','hard'].forEach(x=>{document.getElementById('btn-'+x).className='btn'+(x===d?' active green':'')});}
 function setMap(i){cfg.mapIdx=i;
- for(let j=0;j<5;j++)document.getElementById('map-'+j).className='btn'+(j===i?' active':'');
-}
-function setBet(i){cfg.bet=bets[i];
- for(let j=0;j<4;j++)document.getElementById('bet-'+j).className='btn'+(j===i?' active':'');
- document.getElementById('bet-display').textContent=cfg.bet+' SOL';
-}
+ for(let j=0;j<5;j++)document.getElementById('map-'+j).className='btn'+(j===i?' active':'');}
 function showMenu(){
  document.getElementById('menu').style.display='flex';
  document.getElementById('game-screen').style.display='none';
  document.getElementById('result-screen').style.display='none';
- running=false;
-}
+ running=false;paused=false;}
+function showScreen(id){
+ ['menu','game-screen','result-screen'].forEach(s=>document.getElementById(s).style.display='none');
+ document.getElementById(id).style.display='flex';}
 
-// ── INIT GAME ─────────────────────────────────
-function startGame(){
- document.getElementById('menu').style.display='none';
- document.getElementById('result-screen').style.display='none';
- document.getElementById('game-screen').style.display='flex';
- document.getElementById('hud-mode').textContent=cfg.mode==='pve'?cfg.diff.toUpperCase():'PVP';
- document.getElementById('hud-bet').textContent=cfg.bet+' SOL';
-
- initCanvas();
- initWorld();
- running=false;
-
+// ── SINGLE PLAYER START ───────────────────
+function startSingle(){
+ showScreen('game-screen');
+ document.getElementById('hud-mode').textContent=cfg.diff.toUpperCase();
+ document.getElementById('hud-map').textContent=MAP_NAMES[cfg.mapIdx];
+ document.getElementById('pause-overlay').style.display='none';
+ initCanvas();initWorld();
+ running=false;paused=false;
  // Countdown
  let cd=3;
  const ov=document.getElementById('countdown-overlay');
  const ct=document.getElementById('countdown-text');
  ov.style.display='flex';ct.textContent='3';
- const ci=setInterval(()=>{cd--;if(cd>0){ct.textContent=cd}else if(cd===0){ct.textContent='GO!'}else{clearInterval(ci);ov.style.display='none';running=true}},1000);
+ const ci=setInterval(()=>{cd--;if(cd>0)ct.textContent=cd;else if(cd===0)ct.textContent='GO!';else{clearInterval(ci);ov.style.display='none';running=true}},1000);
 }
+function startPVP(){/* future */}
 
+function pauseGame(){paused=true;document.getElementById('pause-overlay').style.display='flex';}
+function resumeGame(){paused=false;document.getElementById('pause-overlay').style.display='none';}
+function quitGame(){running=false;paused=false;showMenu();}
+
+// ── CANVAS ────────────────────────────────
 function initCanvas(){
  canvas=document.getElementById('c');ctx=canvas.getContext('2d');
  const wrap=document.getElementById('canvas-wrap');
  const ww=wrap.clientWidth,wh=wrap.clientHeight;
- scale=Math.min(Math.floor(ww/MW),Math.floor(wh/MH));
- if(scale<1)scale=1;
- cw=MW*scale;ch=MH*scale;
- canvas.width=cw;canvas.height=ch;
- canvas.style.width=cw+'px';canvas.style.height=ch+'px';
+ // Scale to fit, max integer scale for crisp pixels
+ scale=Math.max(1,Math.min(Math.floor(ww/MW),Math.floor(wh/MH)));
+ canvas.width=MW*scale;canvas.height=MH*scale;
+ canvas.style.width=canvas.width+'px';canvas.style.height=canvas.height+'px';
  ctx.imageSmoothingEnabled=false;
 }
 
+// ── WORLD INIT ────────────────────────────
 function initWorld(){
  eid=0;
  const m=MAPS[cfg.mapIdx].map(r=>[...r]);
- world={
-  map:m,state:'playing',timeLeft:MATCH_TIME,
-  tanks:[
-   mkTank('p1',6,12,DIR.UP,true,0),
-   mkTank('p2',6,0,DIR.DOWN,cfg.mode==='pvp',1)
-  ],
+ world={map:m,state:'playing',timeLeft:MATCH_TIME,
+  tanks:[mkTank('p1',6,12,DIR.UP,true,0),mkTank('p2',6,0,DIR.DOWN,false,1)],
   bullets:[],powerUps:[],explosions:[],
   bases:{p1:{r:12,c:6,dead:false},p2:{r:0,c:6,dead:false}},
-  scores:{p1k:0,p2k:0},
-  shovel:false,shovelT:0,shovelPI:-1,
-  puTimer:0,botTimer:0
- };
+  scores:{p1k:0,p2k:0},shovel:false,shovelT:0,shovelPI:-1,puTimer:0,botTimer:0};
  updateLivesUI();
 }
-
 function mkTank(id,c,r,dir,isP,pi){
  return{id,x:c*T,y:r*T,dir,spd:TANK_SPD,moving:false,lives:MAX_LIVES,alive:true,
   spawning:true,spawnT:SPAWN_INV,inv:true,invT:SPAWN_INV,
   maxB:1,bSpd:BULLET_SPD,star:false,helmet:false,frozen:false,frozenT:0,
-  isP,pi,lastFire:0,af:0,at:0};
-}
+  isP,pi,lastFire:0,af:0,at:0,_ai:null};}
 
-// ── GAME LOOP ─────────────────────────────────
+// ── GAME LOOP ─────────────────────────────
 let lastT=0;
 function loop(ts){
  requestAnimationFrame(loop);
  if(!lastT)lastT=ts;
  const dt=Math.min(ts-lastT,50);lastT=ts;
- if(!running)return;
+ if(!running||paused)return;
  update(dt);render();
 }
 requestAnimationFrame(loop);
 
 function update(dt){
  const w=world;if(w.state!=='playing')return;
-
  w.timeLeft-=dt;
  if(w.timeLeft<=0){endGame('draw');return}
-
- // HUD timer
  const mins=Math.floor(w.timeLeft/60000),secs=Math.floor((w.timeLeft%60000)/1000);
  document.getElementById('hud-timer').textContent=mins+':'+String(secs).padStart(2,'0');
 
- // Bot AI
- if(cfg.mode==='pve')botThink(w,dt);
-
- // Update tanks
+ botThink(w,dt);
  updateTank(w.tanks[0],input,dt);
- updateTank(w.tanks[1],w.tanks[1].isP?{up:false,down:false,left:false,right:false,fire:false}:w.tanks[1]._ai||{up:false,down:false,left:false,right:false,fire:false},dt);
-
- // Bullets
+ updateTank(w.tanks[1],w.tanks[1]._ai||{up:false,down:false,left:false,right:false,fire:false},dt);
  updateBullets(dt);
-
- // Explosions
  w.explosions=w.explosions.filter(e=>{e.t+=dt;if(e.t>80){e.t=0;e.f++}return e.f<e.mf});
-
- // PowerUps
  updatePU(dt);
-
- // Win check
  checkWin();
 }
 
-// ── TANK UPDATE ───────────────────────────────
+// ── TANK ──────────────────────────────────
 function updateTank(tank,inp,dt){
  if(!tank.alive)return;
  if(tank.spawning){tank.spawnT-=dt;if(tank.spawnT<=0){tank.spawning=false;tank.inv=false;tank.invT=0}}
  if(tank.inv&&!tank.spawning){tank.invT-=dt;if(tank.invT<=0){tank.inv=false;tank.helmet=false}}
  if(tank.frozen){tank.frozenT-=dt;if(tank.frozenT<=0)tank.frozen=false;return}
  tank.at+=dt;if(tank.at>100){tank.at=0;tank.af=(tank.af+1)%2}
-
  let nd=null;
  if(inp.up)nd=DIR.UP;else if(inp.down)nd=DIR.DOWN;else if(inp.left)nd=DIR.LEFT;else if(inp.right)nd=DIR.RIGHT;
  tank.moving=nd!==null;
-
  if(nd!==null){
   if(tank.dir!==nd){tank.dir=nd;tank.x=Math.round(tank.x/(T/2))*(T/2);tank.y=Math.round(tank.y/(T/2))*(T/2)}
   let dx=0,dy=0;
   if(nd===DIR.UP)dy=-tank.spd;else if(nd===DIR.DOWN)dy=tank.spd;else if(nd===DIR.LEFT)dx=-tank.spd;else dx=tank.spd;
   const nx=tank.x+dx,ny=tank.y+dy;
-  if(nx>=0&&nx<=MW-T&&ny>=0&&ny<=MH-T&&!tileCol(nx,ny,tank.id)&&!tankCol(nx,ny,tank.id)){tank.x=nx;tank.y=ny}
+  if(nx>=0&&nx<=MW-T&&ny>=0&&ny<=MH-T&&!tileCol(nx,ny)&&!tankCol(nx,ny,tank.id)){tank.x=nx;tank.y=ny}
  }
  if(inp.fire)fireBullet(tank);
 }
-
-function tileCol(x,y,tid){
+function tileCol(x,y){
  const pts=[{c:Math.floor(x/T),r:Math.floor(y/T)},{c:Math.floor((x+T-1)/T),r:Math.floor(y/T)},
   {c:Math.floor(x/T),r:Math.floor((y+T-1)/T)},{c:Math.floor((x+T-1)/T),r:Math.floor((y+T-1)/T)}];
  for(const p of pts){if(p.c<0||p.c>=COLS||p.r<0||p.r>=ROWS)return true;
-  const t=world.map[p.r][p.c];if(t===TILE.BRICK||t===TILE.STEEL||t===TILE.WATER||t===TILE.BASE)return true}
- return false;
+  const t=world.map[p.r][p.c];if(t===TILE.BR||t===TILE.ST||t===TILE.WA||t===TILE.BA)return true}return false;
 }
-
-function tankCol(x,y,tid){
- for(const o of world.tanks){if(o.id===tid||!o.alive)continue;if(boxOv(x,y,T,o.x,o.y,T))return true}return false;
-}
-
+function tankCol(x,y,tid){for(const o of world.tanks){if(o.id===tid||!o.alive)continue;if(boxOv(x,y,T,o.x,o.y,T))return true}return false}
 function boxOv(x1,y1,s1,x2,y2,s2){return x1<x2+s2&&x1+s1>x2&&y1<y2+s2&&y1+s1>y2}
 
-// ── BULLETS ───────────────────────────────────
+// ── BULLETS ───────────────────────────────
 function fireBullet(tank){
  const now=performance.now();if(now-tank.lastFire<BULLET_CD)return;
  const active=world.bullets.filter(b=>b.oid===tank.id).length;if(active>=tank.maxB)return;
@@ -357,81 +323,61 @@ function fireBullet(tank){
  else{bx=tank.x+T;by=tank.y+h-2}
  world.bullets.push({id:++eid,x:bx,y:by,dir:tank.dir,spd:tank.bSpd,oid:tank.id,pw:tank.star});
 }
-
 function updateBullets(dt){
- const rem=[];
+ const rem=new Set();
  for(let i=0;i<world.bullets.length;i++){
-  const b=world.bullets[i];
+  const b=world.bullets[i];if(rem.has(i))continue;
   if(b.dir===DIR.UP)b.y-=b.spd;else if(b.dir===DIR.DOWN)b.y+=b.spd;else if(b.dir===DIR.LEFT)b.x-=b.spd;else b.x+=b.spd;
-
-  if(b.x<0||b.x>=MW||b.y<0||b.y>=MH){rem.push(i);addExp(b.x,b.y,false);continue}
-
+  if(b.x<0||b.x>=MW||b.y<0||b.y>=MH){rem.add(i);addExp(b.x,b.y,false);continue}
   const col=Math.floor(b.x/T),row=Math.floor(b.y/T);
   if(col>=0&&col<COLS&&row>=0&&row<ROWS){
    const t=world.map[row][col];
-   if(t===TILE.BRICK){world.map[row][col]=TILE.EMPTY;rem.push(i);addExp(b.x,b.y,false);continue}
-   if(t===TILE.STEEL){if(b.pw)world.map[row][col]=TILE.EMPTY;rem.push(i);addExp(b.x,b.y,false);continue}
-   if(t===TILE.BASE){world.map[row][col]=TILE.BASE_X;rem.push(i);addExp(b.x,b.y,true);
+   if(t===TILE.BR){world.map[row][col]=TILE.E;rem.add(i);addExp(b.x,b.y,false);continue}
+   if(t===TILE.ST){if(b.pw)world.map[row][col]=TILE.E;rem.add(i);addExp(b.x,b.y,false);continue}
+   if(t===TILE.BA){world.map[row][col]=TILE.BX;rem.add(i);addExp(b.x,b.y,true);
     if(row===world.bases.p1.r&&col===world.bases.p1.c)world.bases.p1.dead=true;
     if(row===world.bases.p2.r&&col===world.bases.p2.c)world.bases.p2.dead=true;continue}
   }
-
-  for(const tank of world.tanks){
-   if(!tank.alive||tank.id===b.oid)continue;
-   if(boxOv(b.x,b.y,4,tank.x,tank.y,T)){rem.push(i);if(!tank.inv)hitTank(tank,b.oid);else addExp(b.x,b.y,false);break}
-  }
-
-  for(let j=i+1;j<world.bullets.length;j++){
-   const o=world.bullets[j];if(boxOv(b.x,b.y,4,o.x,o.y,4)){rem.push(i);rem.push(j);addExp(b.x,b.y,false)}
-  }
+  let hit=false;
+  for(const tank of world.tanks){if(!tank.alive||tank.id===b.oid)continue;
+   if(boxOv(b.x,b.y,4,tank.x,tank.y,T)){rem.add(i);if(!tank.inv)hitTank(tank,b.oid);else addExp(b.x,b.y,false);hit=true;break}}
+  if(hit)continue;
+  for(let j=i+1;j<world.bullets.length;j++){const o=world.bullets[j];
+   if(!rem.has(j)&&boxOv(b.x,b.y,4,o.x,o.y,4)){rem.add(i);rem.add(j);addExp(b.x,b.y,false)}}
  }
- world.bullets=world.bullets.filter((_,i)=>!rem.includes(i));
+ world.bullets=world.bullets.filter((_,i)=>!rem.has(i));
 }
-
 function hitTank(tank,aid){
  tank.lives--;addExp(tank.x+T/2,tank.y+T/2,true);
  if(tank.pi===0)world.scores.p2k++;else world.scores.p1k++;
- if(tank.lives<=0){tank.alive=false}else{respawn(tank)}
+ if(tank.lives<=0)tank.alive=false;else respawn(tank);
  updateLivesUI();
 }
-
 function respawn(tank){
  const base=tank.pi===0?world.bases.p1:world.bases.p2;
  tank.x=base.c*T;tank.y=base.r*T;tank.dir=tank.pi===0?DIR.UP:DIR.DOWN;
  tank.spawning=true;tank.spawnT=SPAWN_INV;tank.inv=true;tank.invT=SPAWN_INV;
  tank.star=false;tank.maxB=1;tank.bSpd=BULLET_SPD;tank.frozen=false;
 }
-
 function addExp(x,y,big){world.explosions.push({x,y,f:0,mf:big?5:3,t:0,big})}
-
 function updateLivesUI(){
  const mk=(n,col)=>{let s='';for(let i=0;i<n;i++)s+='<div class="life-box" style="background:'+col+'"></div>';return s};
- document.getElementById('p1-lives').innerHTML=mk(world.tanks[0].lives,C.P1);
- document.getElementById('p2-lives').innerHTML=mk(world.tanks[1].lives,C.P2);
+ document.getElementById('p1-lives').innerHTML=mk(Math.max(0,world.tanks[0].lives),C.P1);
+ document.getElementById('p2-lives').innerHTML=mk(Math.max(0,world.tanks[1].lives),C.P2);
 }
 
-// ── POWERUPS ──────────────────────────────────
+// ── POWERUPS ──────────────────────────────
 function updatePU(dt){
  world.puTimer+=dt;
  if(world.puTimer>=PU_INTERVAL&&world.powerUps.length<2){
-  world.puTimer=0;
-  const type=PU_TYPES[Math.floor(Math.random()*PU_TYPES.length)];
-  let c,r,at=0;
-  do{c=Math.floor(Math.random()*COLS);r=2+Math.floor(Math.random()*(ROWS-4));at++}while(world.map[r][c]!==TILE.EMPTY&&at<50);
-  if(at<50)world.powerUps.push({id:++eid,x:c*T,y:r*T,type,bt:0});
- }
-
+  world.puTimer=0;const type=PU_TYPES[Math.floor(Math.random()*PU_TYPES.length)];
+  let c,r,at=0;do{c=Math.floor(Math.random()*COLS);r=2+Math.floor(Math.random()*(ROWS-4));at++}while(world.map[r][c]!==TILE.E&&at<50);
+  if(at<50)world.powerUps.push({id:++eid,x:c*T,y:r*T,type,bt:0});}
  if(world.shovel){world.shovelT-=dt;if(world.shovelT<=0){world.shovel=false;removeShovel()}}
-
- for(let i=world.powerUps.length-1;i>=0;i--){
-  const pu=world.powerUps[i];pu.bt+=dt;
-  for(const tank of world.tanks){
-   if(!tank.alive)continue;
-   if(boxOv(tank.x,tank.y,T,pu.x,pu.y,T)){collectPU(tank,pu);world.powerUps.splice(i,1);break}
-  }
- }
+ for(let i=world.powerUps.length-1;i>=0;i--){const pu=world.powerUps[i];pu.bt+=dt;
+  for(const tank of world.tanks){if(!tank.alive)continue;
+   if(boxOv(tank.x,tank.y,T,pu.x,pu.y,T)){collectPU(tank,pu);world.powerUps.splice(i,1);break}}}
 }
-
 function collectPU(tank,pu){
  switch(pu.type){
   case'star':tank.star=true;tank.maxB=2;tank.bSpd=BULLET_FAST;break;
@@ -439,207 +385,122 @@ function collectPU(tank,pu){
   case'grenade':for(const o of world.tanks){if(o.id!==tank.id&&o.alive)hitTank(o,tank.id)}break;
   case'timer':for(const o of world.tanks){if(o.id!==tank.id&&o.alive){o.frozen=true;o.frozenT=TIMER_T}}break;
   case'shovel':applyShovel(tank.pi);world.shovel=true;world.shovelT=SHOVEL_T;world.shovelPI=tank.pi;break;
-  case'tank':tank.lives=Math.min(tank.lives+1,MAX_LIVES+2);updateLivesUI();break;
- }
+  case'tank':tank.lives=Math.min(tank.lives+1,MAX_LIVES+2);updateLivesUI();break;}
 }
+function applyShovel(pi){const base=pi===0?world.bases.p1:world.bases.p2;
+ [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]].forEach(([dr,dc])=>{
+  const r=base.r+dr,c=base.c+dc;if(r>=0&&r<ROWS&&c>=0&&c<COLS&&(world.map[r][c]===TILE.E||world.map[r][c]===TILE.BR))world.map[r][c]=TILE.ST})}
+function removeShovel(){const base=world.shovelPI===0?world.bases.p1:world.bases.p2;
+ [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]].forEach(([dr,dc])=>{
+  const r=base.r+dr,c=base.c+dc;if(r>=0&&r<ROWS&&c>=0&&c<COLS&&world.map[r][c]===TILE.ST)world.map[r][c]=TILE.BR})}
 
-function applyShovel(pi){
- const base=pi===0?world.bases.p1:world.bases.p2;
- const off=[[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
- for(const[dr,dc]of off){const r=base.r+dr,c=base.c+dc;
-  if(r>=0&&r<ROWS&&c>=0&&c<COLS&&(world.map[r][c]===TILE.EMPTY||world.map[r][c]===TILE.BRICK))world.map[r][c]=TILE.STEEL}
-}
-function removeShovel(){
- const base=world.shovelPI===0?world.bases.p1:world.bases.p2;
- const off=[[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
- for(const[dr,dc]of off){const r=base.r+dr,c=base.c+dc;
-  if(r>=0&&r<ROWS&&c>=0&&c<COLS&&world.map[r][c]===TILE.STEEL)world.map[r][c]=TILE.BRICK}
-}
-
-// ── BOT AI ────────────────────────────────────
+// ── BOT AI ────────────────────────────────
 function botThink(w,dt){
  w.botTimer+=dt;
  const interval=cfg.diff==='easy'?600:cfg.diff==='medium'?400:250;
- if(w.botTimer<interval)return;
- w.botTimer=0;
+ if(w.botTimer<interval)return;w.botTimer=0;
  const me=w.tanks[1],en=w.tanks[0];
  if(!me.alive||me.frozen){me._ai={up:false,down:false,left:false,right:false,fire:false};return}
  const ai={up:false,down:false,left:false,right:false,fire:false};
  const fc=cfg.diff==='easy'?0.3:cfg.diff==='medium'?0.5:0.8;
- const dc=cfg.diff==='easy'?0.15:cfg.diff==='medium'?0.1:0.05;
 
- // Direction
  if(cfg.diff==='hard'&&Math.random()<0.7){
-  // Pursue enemy or base
-  const tx=Math.random()<0.6?en.x:w.bases.p1.c*T;
-  const ty=Math.random()<0.6?en.y:w.bases.p1.r*T;
+  const tx=Math.random()<0.6?en.x:w.bases.p1.c*T,ty=Math.random()<0.6?en.y:w.bases.p1.r*T;
   const dx=tx-me.x,dy=ty-me.y;
-  if(Math.abs(dx)>Math.abs(dy)){if(dx>0)ai.right=true;else ai.left=true}
-  else{if(dy>0)ai.down=true;else ai.up=true}
+  if(Math.abs(dx)>Math.abs(dy)){if(dx>0)ai.right=true;else ai.left=true}else{if(dy>0)ai.down=true;else ai.up=true}
  }else if(cfg.diff==='medium'&&Math.random()<0.5){
   const dx=en.x-me.x,dy=en.y-me.y;
-  if(Math.abs(dx)>Math.abs(dy)){if(dx>0)ai.right=true;else ai.left=true}
-  else{if(dy>0)ai.down=true;else ai.up=true}
+  if(Math.abs(dx)>Math.abs(dy)){if(dx>0)ai.right=true;else ai.left=true}else{if(dy>0)ai.down=true;else ai.up=true}
  }else{
-  if(Math.random()<dc||isBlocked(w,me)){
-   const d=[DIR.UP,DIR.DOWN,DIR.LEFT,DIR.RIGHT][Math.floor(Math.random()*4)];
+  const dc=cfg.diff==='easy'?0.15:cfg.diff==='medium'?0.1:0.05;
+  if(Math.random()<dc||isBlocked(w,me)){const d=[DIR.UP,DIR.DOWN,DIR.LEFT,DIR.RIGHT][Math.floor(Math.random()*4)];
    if(d===DIR.UP)ai.up=true;else if(d===DIR.DOWN)ai.down=true;else if(d===DIR.LEFT)ai.left=true;else ai.right=true;
-  }else{
-   if(me.dir===DIR.UP)ai.up=true;else if(me.dir===DIR.DOWN)ai.down=true;
-   else if(me.dir===DIR.LEFT)ai.left=true;else ai.right=true;
-  }
+  }else{if(me.dir===DIR.UP)ai.up=true;else if(me.dir===DIR.DOWN)ai.down=true;else if(me.dir===DIR.LEFT)ai.left=true;else ai.right=true}
  }
-
- // Fire
  if(isAligned(me,en)||Math.random()<fc)ai.fire=true;
-
  me._ai=ai;
 }
-
-function isBlocked(w,tank){
- let cx=tank.x,cy=tank.y;
+function isBlocked(w,tank){let cx=tank.x,cy=tank.y;
  if(tank.dir===DIR.UP)cy-=T;else if(tank.dir===DIR.DOWN)cy+=T;else if(tank.dir===DIR.LEFT)cx-=T;else cx+=T;
  const c=Math.floor(cx/T),r=Math.floor(cy/T);
  if(c<0||c>=COLS||r<0||r>=ROWS)return true;
- const t=w.map[r][c];return t===TILE.BRICK||t===TILE.STEEL||t===TILE.WATER||t===TILE.BASE;
-}
-
+ const t=w.map[r][c];return t===TILE.BR||t===TILE.ST||t===TILE.WA||t===TILE.BA;}
 function isAligned(me,en){
- const tol=T;
- if(Math.abs(me.x-en.x)<tol){if(en.y<me.y&&me.dir===DIR.UP)return true;if(en.y>me.y&&me.dir===DIR.DOWN)return true}
- if(Math.abs(me.y-en.y)<tol){if(en.x<me.x&&me.dir===DIR.LEFT)return true;if(en.x>me.x&&me.dir===DIR.RIGHT)return true}
- return false;
-}
+ if(Math.abs(me.x-en.x)<T){if(en.y<me.y&&me.dir===DIR.UP)return true;if(en.y>me.y&&me.dir===DIR.DOWN)return true}
+ if(Math.abs(me.y-en.y)<T){if(en.x<me.x&&me.dir===DIR.LEFT)return true;if(en.x>me.x&&me.dir===DIR.RIGHT)return true}
+ return false;}
 
-// ── WIN CHECK ─────────────────────────────────
+// ── WIN ───────────────────────────────────
 function checkWin(){
- if(world.bases.p1.dead){endGame('p2');return}
- if(world.bases.p2.dead){endGame('p1');return}
+ if(world.bases.p1.dead){endGame('p2');return}if(world.bases.p2.dead){endGame('p1');return}
  if(!world.tanks[0].alive&&world.tanks[0].lives<=0){endGame('p2');return}
- if(!world.tanks[1].alive&&world.tanks[1].lives<=0){endGame('p1');return}
-}
-
+ if(!world.tanks[1].alive&&world.tanks[1].lives<=0){endGame('p1');return}}
 function endGame(winner){
  world.state='over';running=false;
  const dur=MATCH_TIME-world.timeLeft;
  const mins=Math.floor(dur/60000),secs=Math.floor((dur%60000)/1000);
-
- document.getElementById('game-screen').style.display='none';
- document.getElementById('result-screen').style.display='flex';
-
+ showScreen('result-screen');
  const banner=document.getElementById('result-banner');
  const title=document.getElementById('result-title');
  banner.className='result-banner '+(winner==='p1'?'win':winner==='draw'?'draw':'lose');
  title.textContent=winner==='p1'?'VICTORY!':winner==='draw'?'DRAW':'DEFEAT';
-
  document.getElementById('r-duration').textContent=mins+':'+String(secs).padStart(2,'0');
  document.getElementById('r-kills').textContent=world.scores.p1k;
  document.getElementById('r-ekills').textContent=world.scores.p2k;
 }
 
-// ── RENDER ────────────────────────────────────
+// ── RENDER ────────────────────────────────
 function render(){
  ctx.save();ctx.scale(scale,scale);
  ctx.fillStyle=C.BK;ctx.fillRect(0,0,MW,MH);
-
- // Map (no forest first pass)
- for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
-  const t=world.map[r][c],x=c*T,y=r*T;
-  if(t===TILE.BRICK)dBrick(x,y);
-  else if(t===TILE.STEEL)dSteel(x,y);
-  else if(t===TILE.WATER)dWater(x,y);
-  else if(t===TILE.BASE)dBase(x,y,false);
-  else if(t===TILE.BASE_X)dBase(x,y,true);
- }
-
- // PowerUps
+ for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){const t=world.map[r][c],x=c*T,y=r*T;
+  if(t===TILE.BR)dBrick(x,y);else if(t===TILE.ST)dSteel(x,y);else if(t===TILE.WA)dWater(x,y);
+  else if(t===TILE.BA)dBase(x,y,false);else if(t===TILE.BX)dBase(x,y,true);}
  for(const pu of world.powerUps){if(Math.floor(pu.bt/200)%2!==0){ctx.fillStyle=C.WH;ctx.fillRect(pu.x,pu.y,T,T);ctx.fillStyle=C.RED;ctx.fillRect(pu.x+3,pu.y+3,T-6,T-6)}}
-
- // Tanks
- for(const tank of world.tanks){if(tank.alive)dTank(tank)}
-
- // Bullets
+ for(const tank of world.tanks)if(tank.alive)dTank(tank);
  for(const b of world.bullets){ctx.fillStyle=C.WH;ctx.fillRect(b.x,b.y,4,4);ctx.fillStyle=C.YEL;ctx.fillRect(b.x+1,b.y+1,2,2)}
-
- // Forest overlay
- for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++)if(world.map[r][c]===TILE.FOREST)dForest(c*T,r*T);
-
- // Explosions
- for(const e of world.explosions){
-  const sz=[4,8,12,16,12,8][Math.min(e.f,5)];
+ for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++)if(world.map[r][c]===TILE.FO)dForest(c*T,r*T);
+ for(const e of world.explosions){const sz=[4,8,12,16,12,8][Math.min(e.f,5)];
   ctx.fillStyle=C.RED;ctx.fillRect(e.x-sz/2,e.y-sz/2,sz,sz);
-  const i=Math.floor(sz*0.6);ctx.fillStyle=C.YEL;ctx.fillRect(e.x-i/2,e.y-i/2,i,i);
-  const k=Math.floor(sz*0.3);ctx.fillStyle=C.WH;ctx.fillRect(e.x-k/2,e.y-k/2,k,k);
- }
-
+  const i=Math.floor(sz*.6);ctx.fillStyle=C.YEL;ctx.fillRect(e.x-i/2,e.y-i/2,i,i);
+  const k=Math.floor(sz*.3);ctx.fillStyle=C.WH;ctx.fillRect(e.x-k/2,e.y-k/2,k,k)}
  ctx.restore();
 }
-
 function dBrick(x,y){ctx.fillStyle=C.BR;ctx.fillRect(x,y,T,T);ctx.fillStyle=C.BRD;for(let r=0;r<4;r++)for(let c=0;c<4;c++)ctx.fillRect(x+c*4+(r%2===0?0:2),y+r*4,1,4)}
 function dSteel(x,y){ctx.fillStyle=C.ST;ctx.fillRect(x,y,T,T);ctx.fillStyle=C.STD;ctx.fillRect(x,y,T,1);ctx.fillRect(x,y,1,T);ctx.fillRect(x+T-1,y,1,T);ctx.fillRect(x,y+T-1,T,1)}
 function dWater(x,y){ctx.fillStyle=C.WA;ctx.fillRect(x,y,T,T);ctx.fillStyle=C.WAD;const t=performance.now()/300;for(let i=0;i<T;i+=4)ctx.fillRect(x+i,y+Math.floor(Math.sin(t+i/4)*2)+T/2,3,1)}
 function dForest(x,y){ctx.fillStyle=C.FO;ctx.fillRect(x,y,T,T);ctx.fillStyle=C.FOD;ctx.fillRect(x+2,y+2,4,4);ctx.fillRect(x+10,y+2,4,4);ctx.fillRect(x+6,y+8,4,4)}
-function dBase(x,y,dead){
- if(dead){ctx.fillStyle=C.BRD;ctx.fillRect(x,y,T,T);ctx.fillStyle=C.RED;ctx.fillRect(x+3,y+3,2,2);ctx.fillRect(x+11,y+3,2,2);ctx.fillRect(x+7,y+7,2,2);ctx.fillRect(x+3,y+11,2,2);ctx.fillRect(x+11,y+11,2,2)}
- else{ctx.fillStyle=C.BA;ctx.fillRect(x,y,T,T);ctx.fillStyle=C.BAD;ctx.fillRect(x+4,y+2,8,2);ctx.fillRect(x+6,y+4,4,8);ctx.fillRect(x+4,y+12,8,2)}
-}
-function dTank(tank){
- if(tank.spawning&&Math.floor(performance.now()/100)%2===0)return;
- ctx.save();const cx=tank.x+T/2,cy=tank.y+T/2;ctx.translate(cx,cy);
- ctx.rotate([0,Math.PI/2,Math.PI,-Math.PI/2][tank.dir]);ctx.translate(-T/2,-T/2);
- const p=tank.pi===0;
- const body=p?C.P1:C.P2,tracks=p?C.P1T:C.P2T,gun=p?C.P1G:C.P2G;
+function dBase(x,y,dead){if(dead){ctx.fillStyle=C.BRD;ctx.fillRect(x,y,T,T);ctx.fillStyle=C.RED;ctx.fillRect(x+3,y+3,2,2);ctx.fillRect(x+11,y+3,2,2);ctx.fillRect(x+7,y+7,2,2);ctx.fillRect(x+3,y+11,2,2);ctx.fillRect(x+11,y+11,2,2)}
+ else{ctx.fillStyle=C.BA;ctx.fillRect(x,y,T,T);ctx.fillStyle=C.BAD;ctx.fillRect(x+4,y+2,8,2);ctx.fillRect(x+6,y+4,4,8);ctx.fillRect(x+4,y+12,8,2)}}
+function dTank(tank){if(tank.spawning&&Math.floor(performance.now()/100)%2===0)return;
+ ctx.save();const cx=tank.x+T/2,cy=tank.y+T/2;ctx.translate(cx,cy);ctx.rotate([0,Math.PI/2,Math.PI,-Math.PI/2][tank.dir]);ctx.translate(-T/2,-T/2);
+ const p=tank.pi===0;const body=p?C.P1:C.P2,tracks=p?C.P1T:C.P2T,gun=p?C.P1G:C.P2G;
  ctx.fillStyle=tracks;ctx.fillRect(0,1,3,T-2);ctx.fillRect(T-3,1,3,T-2);
  for(let i=tank.af;i<T-2;i+=4){ctx.fillRect(0,1+i,3,2);ctx.fillRect(T-3,1+i,3,2)}
- ctx.fillStyle=body;ctx.fillRect(3,3,T-6,T-4);
- ctx.fillStyle=gun;ctx.fillRect(T/2-1,0,2,T/2);
+ ctx.fillStyle=body;ctx.fillRect(3,3,T-6,T-4);ctx.fillStyle=gun;ctx.fillRect(T/2-1,0,2,T/2);
  if(tank.inv&&!tank.spawning){ctx.strokeStyle=C.WH;ctx.lineWidth=1;ctx.strokeRect(-1,-1,T+2,T+2)}
- ctx.restore();
-}
+ ctx.restore();}
 
-// ── CONTROLS ──────────────────────────────────
-function setInput(dir,val){
- if(val){input.up=false;input.down=false;input.left=false;input.right=false}
- input[dir]=val;
-}
-
-// D-Pad touch
-document.querySelectorAll('.d-btn').forEach(btn=>{
- const dir=btn.dataset.dir;
+// ── CONTROLS ──────────────────────────────
+function setInput(dir,val){if(val){input.up=false;input.down=false;input.left=false;input.right=false}input[dir]=val}
+document.querySelectorAll('.d-btn').forEach(btn=>{const dir=btn.dataset.dir;
  btn.addEventListener('touchstart',e=>{e.preventDefault();setInput(dir,true)},{passive:false});
  btn.addEventListener('touchend',e=>{e.preventDefault();setInput(dir,false)},{passive:false});
- btn.addEventListener('touchcancel',e=>{setInput(dir,false)});
- btn.addEventListener('mousedown',e=>{setInput(dir,true)});
- btn.addEventListener('mouseup',e=>{setInput(dir,false)});
-});
-
-// Fire button
+ btn.addEventListener('touchcancel',()=>setInput(dir,false));
+ btn.addEventListener('mousedown',()=>setInput(dir,true));btn.addEventListener('mouseup',()=>setInput(dir,false))});
 const fb=document.getElementById('fire-btn');
 fb.addEventListener('touchstart',e=>{e.preventDefault();input.fire=true},{passive:false});
 fb.addEventListener('touchend',e=>{e.preventDefault();input.fire=false},{passive:false});
 fb.addEventListener('touchcancel',()=>{input.fire=false});
-fb.addEventListener('mousedown',()=>{input.fire=true});
-fb.addEventListener('mouseup',()=>{input.fire=false});
+fb.addEventListener('mousedown',()=>{input.fire=true});fb.addEventListener('mouseup',()=>{input.fire=false});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowUp'||e.key==='w')setInput('up',true);if(e.key==='ArrowDown'||e.key==='s')setInput('down',true);
+ if(e.key==='ArrowLeft'||e.key==='a')setInput('left',true);if(e.key==='ArrowRight'||e.key==='d')setInput('right',true);if(e.key===' '||e.key==='Enter')input.fire=true;
+ if(e.key==='Escape')pauseGame()});
+document.addEventListener('keyup',e=>{if(e.key==='ArrowUp'||e.key==='w')input.up=false;if(e.key==='ArrowDown'||e.key==='s')input.down=false;
+ if(e.key==='ArrowLeft'||e.key==='a')input.left=false;if(e.key==='ArrowRight'||e.key==='d')input.right=false;if(e.key===' '||e.key==='Enter')input.fire=false});
 
-// Keyboard (for testing)
-document.addEventListener('keydown',e=>{
- if(e.key==='ArrowUp'||e.key==='w')setInput('up',true);
- if(e.key==='ArrowDown'||e.key==='s')setInput('down',true);
- if(e.key==='ArrowLeft'||e.key==='a')setInput('left',true);
- if(e.key==='ArrowRight'||e.key==='d')setInput('right',true);
- if(e.key===' '||e.key==='Enter')input.fire=true;
-});
-document.addEventListener('keyup',e=>{
- if(e.key==='ArrowUp'||e.key==='w')input.up=false;
- if(e.key==='ArrowDown'||e.key==='s')input.down=false;
- if(e.key==='ArrowLeft'||e.key==='a')input.left=false;
- if(e.key==='ArrowRight'||e.key==='d')input.right=false;
- if(e.key===' '||e.key==='Enter')input.fire=false;
-});
-
-// Back button
-window.onBackPressed=function(){if(running){running=false;showMenu()}};
-window.onGamePause=function(){};
+window.onBackPressed=function(){if(running&&!paused)pauseGame();else if(paused)quitGame();else{/* already in menu */}};
+window.onGamePause=function(){if(running)pauseGame()};
 window.onGameResume=function(){};
 </script>
 </body>
