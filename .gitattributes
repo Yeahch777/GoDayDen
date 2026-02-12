@@ -1,0 +1,7 @@
+# Binary files - prevent git from modifying line endings
+*.apk binary
+*.png binary
+*.jpg binary
+*.keystore binary
+*.jks binary
+*.dex binary
