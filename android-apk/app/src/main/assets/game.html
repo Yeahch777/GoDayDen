@@ -6,60 +6,60 @@
 <title>Battle Tanks: Seeker Edition</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;touch-action:manipulation}
-html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Courier New',monospace;color:#fcfcfc}
+html,body{width:100%;height:100%;overflow:hidden;background:#0a0a0f;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#e8e8e8}
 .screen{position:absolute;top:0;left:0;width:100%;height:100%;display:none;flex-direction:column}
-#menu{display:flex;align-items:center;justify-content:center;overflow-y:auto}
-.menu-inner{width:100%;max-width:400px;padding:20px 16px;padding-top:env(safe-area-inset-top,20px);padding-bottom:env(safe-area-inset-bottom,20px)}
-.title{font-size:6.5vw;font-weight:bold;color:#FCE83A;letter-spacing:2px;text-align:center}
-.subtitle{font-size:2.8vw;color:#3CBF3C;letter-spacing:3px;margin-top:4px;text-align:center}
-.title-line{width:60%;height:2px;background:#FCE83A;margin:12px auto}
-.section{margin:14px 0}
-.section-title{font-size:11px;color:#888;letter-spacing:2px;margin-bottom:6px}
-.row{display:flex;gap:5px;flex-wrap:wrap}
-.btn{padding:8px 6px;border:2px solid #444;background:transparent;color:#888;font-family:'Courier New',monospace;font-size:11px;font-weight:bold;border-radius:6px;cursor:pointer;text-align:center;flex:1;min-width:0;white-space:nowrap;overflow:hidden;transition:all .15s}
-.btn:active{opacity:0.7}
-.btn.active{border-color:#FCE83A;color:#FCE83A;background:#2a2000}
-.btn.green{border-color:#3CBF3C;color:#3CBF3C;background:#002a00}
-.big-btn{width:100%;padding:14px 10px;border:none;border-radius:10px;color:#fff;font-family:'Courier New',monospace;font-size:15px;font-weight:bold;letter-spacing:1px;cursor:pointer;margin-top:10px;text-align:center}
-.big-btn:active{opacity:0.8}
-.big-btn.green{background:#3CBF3C}
-.big-btn.blue{background:#0058F8}
-.big-btn.gray{background:#333;color:#888;margin-top:8px;font-size:13px;letter-spacing:1px}
-.play-sub{font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px}
+#menu{display:flex;align-items:center;justify-content:center;overflow-y:auto;background:linear-gradient(180deg,#0a0a1a 0%,#0f1020 50%,#0a0a1a 100%)}
+.menu-inner{width:100%;max-width:360px;padding:24px 20px;padding-top:max(24px,env(safe-area-inset-top))}
+.logo{text-align:center;margin-bottom:20px}
+.logo-main{font-family:'Courier New',monospace;font-size:28px;font-weight:900;color:#FFD700;letter-spacing:1px;text-shadow:0 0 20px rgba(255,215,0,0.3)}
+.logo-sub{font-size:11px;color:#4ADE80;letter-spacing:4px;margin-top:2px;font-weight:600}
+.logo-line{width:80px;height:1px;background:linear-gradient(90deg,transparent,#FFD700,transparent);margin:12px auto}
+.card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:14px;margin-bottom:10px}
+.card-label{font-size:10px;color:#666;letter-spacing:1.5px;font-weight:600;margin-bottom:8px;text-transform:uppercase}
+.chip-row{display:flex;gap:6px}
+.chip{flex:1;padding:8px 4px;border:1.5px solid rgba(255,255,255,0.1);background:transparent;color:#888;font-family:inherit;font-size:11px;font-weight:600;border-radius:8px;cursor:pointer;text-align:center;transition:all .15s}
+.chip:active{transform:scale(0.96)}
+.chip.on{border-color:#FFD700;color:#FFD700;background:rgba(255,215,0,0.08)}
+.chip.on-g{border-color:#4ADE80;color:#4ADE80;background:rgba(74,222,128,0.08)}
+.play-btn{width:100%;padding:14px;border:none;border-radius:12px;color:#fff;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:8px;display:flex;flex-direction:column;align-items:center;gap:2px}
+.play-btn:active{transform:scale(0.98);opacity:0.9}
+.play-btn.go{background:linear-gradient(135deg,#22c55e,#16a34a)}
+.play-btn.pvp{background:linear-gradient(135deg,#3b82f6,#2563eb);opacity:0.35;pointer-events:none}
+.play-hint{font-size:10px;font-weight:400;opacity:0.7}
+.bet-row{display:flex;gap:6px;opacity:0.25}
+.bet-chip{flex:1;padding:6px 2px;border:1px solid rgba(255,255,255,0.08);background:transparent;color:#555;font-family:inherit;font-size:10px;border-radius:6px;text-align:center}
+.ver{color:#333;font-size:9px;text-align:center;margin-top:16px}
 canvas{display:block;image-rendering:pixelated;image-rendering:crisp-edges}
 #game-screen{position:relative}
-#canvas-wrap{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#111}
-#hud{position:absolute;top:0;left:0;width:100%;height:36px;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:space-between;padding:0 14px;font-size:12px;z-index:5}
-#hud2{position:absolute;top:36px;left:0;width:100%;height:26px;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:space-between;padding:0 14px;font-size:11px;z-index:5}
+#canvas-wrap{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#0a0a0a}
+#hud{position:absolute;top:0;left:0;width:100%;height:36px;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:space-between;padding:0 14px;font-size:12px;z-index:5;font-family:'Courier New',monospace}
+#hud2{position:absolute;top:36px;left:0;width:100%;height:26px;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:space-between;padding:0 14px;font-size:11px;z-index:5;font-family:'Courier New',monospace}
 .lives{display:flex;gap:3px;align-items:center}
 .life-box{width:10px;height:10px;border-radius:2px}
 #controls{position:absolute;bottom:0;left:0;width:100%;display:flex;justify-content:space-between;align-items:flex-end;padding:16px 20px;padding-bottom:max(16px,env(safe-area-inset-bottom));z-index:5;pointer-events:none}
 #dpad{width:140px;height:140px;position:relative;pointer-events:auto;opacity:0.85}
 .d-btn{position:absolute;width:44px;height:44px;background:rgba(255,255,255,0.12);border:2px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:18px;color:rgba(255,255,255,0.7);border-radius:8px}
 .d-btn.pressed{background:rgba(255,255,255,0.35);border-color:rgba(255,255,255,0.6);color:#fff}
-.d-up{top:0;left:48px}
-.d-down{bottom:0;left:48px}
-.d-left{top:48px;left:0}
-.d-right{top:48px;right:0}
+.d-up{top:0;left:48px}.d-down{bottom:0;left:48px}.d-left{top:48px;left:0}.d-right{top:48px;right:0}
 .d-center{position:absolute;top:48px;left:48px;width:44px;height:44px;background:rgba(255,255,255,0.05);border-radius:8px}
 #fire-btn{width:76px;height:76px;border-radius:50%;background:rgba(252,0,0,0.6);border:3px solid rgba(252,0,0,0.8);color:rgba(255,255,255,0.9);font-family:'Courier New',monospace;font-size:13px;font-weight:bold;display:flex;align-items:center;justify-content:center;pointer-events:auto;opacity:0.85}
 #fire-btn.pressed{background:rgba(252,0,0,0.9);border-color:#ff4444}
 #countdown-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);display:flex;align-items:center;justify-content:center;z-index:10}
-#countdown-text{font-size:80px;font-weight:bold;color:#FCE83A}
+#countdown-text{font-size:80px;font-weight:bold;color:#FCE83A;font-family:'Courier New',monospace}
 .result-banner{width:90%;max-width:360px;padding:24px;border-radius:12px;text-align:center;margin-bottom:24px}
 .result-banner.win{background:#003300;border:2px solid #3CBF3C}
 .result-banner.lose{background:#330000;border:2px solid #FC0000}
 .result-banner.draw{background:#1a1a00;border:2px solid #FCE83A}
-.result-title{font-size:38px;font-weight:bold;letter-spacing:6px}
-.stats{width:90%;max-width:360px;background:#111;border-radius:8px;padding:14px;margin-bottom:20px}
-.stat-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #222;font-size:13px}
+.result-title{font-size:36px;font-weight:bold;letter-spacing:4px;font-family:'Courier New',monospace}
+.stats{width:90%;max-width:360px;background:rgba(255,255,255,0.04);border-radius:8px;padding:14px;margin-bottom:20px}
+.stat-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px}
 .stat-label{color:#888}.stat-val{font-weight:bold}
-.r-btn{width:90%;max-width:360px;padding:16px;border-radius:8px;font-family:'Courier New',monospace;font-size:16px;font-weight:bold;letter-spacing:3px;text-align:center;margin-bottom:8px;border:none;color:#fff;cursor:pointer}
-.r-btn.primary{background:#3CBF3C}
-.r-btn.secondary{background:transparent;border:2px solid #444;color:#888}
-.version{color:#333;font-size:10px;margin-top:24px;text-align:center}
-.pause-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:20;gap:16px}
-.pause-title{font-size:32px;font-weight:bold;color:#FCE83A;letter-spacing:4px;margin-bottom:16px}
+.r-btn{width:90%;max-width:360px;padding:14px;border-radius:10px;font-family:inherit;font-size:15px;font-weight:700;text-align:center;margin-bottom:8px;border:none;color:#fff;cursor:pointer}
+.r-btn:active{transform:scale(0.98)}
+.r-btn.primary{background:linear-gradient(135deg,#22c55e,#16a34a)}
+.r-btn.secondary{background:transparent;border:1.5px solid rgba(255,255,255,0.1);color:#888}
+.pause-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:20;gap:12px}
+.pause-title{font-size:32px;font-weight:bold;color:#FCE83A;letter-spacing:4px;margin-bottom:16px;font-family:'Courier New',monospace}
 #pause-btn{position:absolute;top:4px;right:6px;background:none;border:none;color:rgba(255,255,255,0.4);font-size:20px;z-index:6;padding:8px;cursor:pointer}
 </style>
 </head>
@@ -68,43 +68,43 @@ canvas{display:block;image-rendering:pixelated;image-rendering:crisp-edges}
 <!-- MENU -->
 <div class="screen" id="menu">
  <div class="menu-inner">
-  <div class="title">BATTLE TANKS</div>
-  <div class="subtitle">SEEKER EDITION</div>
-  <div class="title-line"></div>
-  <button class="big-btn green" onclick="startSingle()">
-   SINGLE PLAYER<br><span class="play-sub">Play vs Bot — Free</span>
-  </button>
-  <div class="section" id="diff-section">
-   <div class="section-title">DIFFICULTY</div>
-   <div class="row">
-    <div class="btn" id="btn-easy" onclick="setDiff('easy')">EASY</div>
-    <div class="btn active green" id="btn-medium" onclick="setDiff('medium')">MEDIUM</div>
-    <div class="btn" id="btn-hard" onclick="setDiff('hard')">HARD</div>
+  <div class="logo">
+   <div class="logo-main">BATTLE TANKS</div>
+   <div class="logo-sub">SEEKER EDITION</div>
+   <div class="logo-line"></div>
+  </div>
+  <button class="play-btn go" onclick="startSingle()">PLAY<span class="play-hint">Single Player vs Bot</span></button>
+  <div class="card">
+   <div class="card-label">Difficulty</div>
+   <div class="chip-row">
+    <div class="chip" id="btn-easy" onclick="setDiff('easy')">Easy</div>
+    <div class="chip on-g" id="btn-medium" onclick="setDiff('medium')">Medium</div>
+    <div class="chip" id="btn-hard" onclick="setDiff('hard')">Hard</div>
    </div>
   </div>
-  <div class="section">
-   <div class="section-title">MAP</div>
-   <div class="row">
-    <div class="btn active" id="map-0" onclick="setMap(0)">Classic</div>
-    <div class="btn" id="map-1" onclick="setMap(1)">Fortress</div>
-    <div class="btn" id="map-2" onclick="setMap(2)">Forest</div>
-    <div class="btn" id="map-3" onclick="setMap(3)">River</div>
-    <div class="btn" id="map-4" onclick="setMap(4)">Steel</div>
+  <div class="card">
+   <div class="card-label">Map</div>
+   <div class="chip-row">
+    <div class="chip on" id="map-0" onclick="setMap(0)">Classic</div>
+    <div class="chip" id="map-1" onclick="setMap(1)">Fort</div>
+    <div class="chip" id="map-2" onclick="setMap(2)">Forest</div>
+   </div>
+   <div class="chip-row" style="margin-top:6px">
+    <div class="chip" id="map-3" onclick="setMap(3)">River</div>
+    <div class="chip" id="map-4" onclick="setMap(4)">Steel</div>
    </div>
   </div>
-  <button class="big-btn blue" onclick="startPVP()" style="opacity:0.4;pointer-events:none">
-   PVP ONLINE<br><span class="play-sub">Coming soon — Connect Wallet</span>
-  </button>
-  <div class="section" style="opacity:0.3">
-   <div class="section-title">BET (requires wallet)</div>
-   <div class="row">
-    <div class="btn active" id="bet-0">0.005</div>
-    <div class="btn" id="bet-1">0.05</div>
-    <div class="btn" id="bet-2">0.5</div>
-    <div class="btn" id="bet-3">5.0</div>
+  <button class="play-btn pvp">PVP ONLINE<span class="play-hint">Coming soon</span></button>
+  <div class="card" style="opacity:0.25">
+   <div class="card-label">Bet (requires wallet)</div>
+   <div class="chip-row">
+    <div class="bet-chip">0.005</div>
+    <div class="bet-chip">0.05</div>
+    <div class="bet-chip">0.5</div>
+    <div class="bet-chip">5.0</div>
    </div>
   </div>
-  <div class="version">v0.3.0 — Solana Seeker</div>
+  <div class="ver">v0.4.0 — Solana Seeker</div>
  </div>
 </div>
 
@@ -134,8 +134,8 @@ canvas{display:block;image-rendering:pixelated;image-rendering:crisp-edges}
  <div id="countdown-overlay"><div id="countdown-text">3</div></div>
  <div class="pause-overlay" id="pause-overlay" style="display:none">
   <div class="pause-title">PAUSED</div>
-  <button class="big-btn green" onclick="resumeGame()" style="width:200px">RESUME</button>
-  <button class="big-btn gray" onclick="quitGame()" style="width:200px">QUIT</button>
+  <button class="play-btn go" onclick="resumeGame()" style="width:200px">RESUME</button>
+  <button class="r-btn secondary" onclick="quitGame()" style="width:200px">QUIT</button>
  </div>
 </div>
 
@@ -152,17 +152,18 @@ canvas{display:block;image-rendering:pixelated;image-rendering:crisp-edges}
 </div>
 
 <script>
-// ══════════════════════════════════════════════════════
-// BATTLE TANKS: SEEKER EDITION v0.3
-// Improved graphics, fullscreen, responsive controls
-// ══════════════════════════════════════════════════════
+// ══════════════════════════════════════════
+// BATTLE TANKS: SEEKER EDITION v0.4
+// Smooth dt-based movement, smart bot AI
+// ══════════════════════════════════════════
 
 const T=16,COLS=13,ROWS=13,MW=COLS*T,MH=ROWS*T;
 const MATCH_TIME=300000;
-const TANK_SPD=1.2,BULLET_SPD=3,BULLET_FAST=5;
+const TANK_SPD=0.075,BULLET_SPD=0.19,BULLET_FAST=0.3;
 const MAX_LIVES=3,SPAWN_INV=3000,BULLET_CD=400;
 const PU_INTERVAL=15000,HELMET_T=10000,TIMER_T=5000,SHOVEL_T=15000;
 const DIR={UP:0,RIGHT:1,DOWN:2,LEFT:3};
+const DX=[0,1,0,-1],DY=[-1,0,1,0];
 const TILE={E:0,BR:1,ST:2,FO:3,WA:4,BA:5,BX:6};
 const PU_TYPES=['star','helmet','grenade','timer','shovel','tank'];
 const NES={
@@ -173,7 +174,7 @@ const NES={
  ST1:'#B8B8B8',ST2:'#E8E8E8',ST3:'#787878',
  WA1:'#2038EC',WA2:'#3CBCFC',WA3:'#0078F8',
  FO1:'#008800',FO2:'#00A800',FO3:'#005800',
- BA1:'#F8A800',BA2:'#F8D800',BA3:'#885800',
+ BA1:'#3070D0',BA2:'#58A0F8',BA3:'#1848A0',
  RED:'#D82800',YEL:'#F8D800',WHT:'#FCFCFC',BLU:'#0058F8',
  PU_BG:'#D82800',PU_FG:'#F8D800'
 };
@@ -195,9 +196,9 @@ let canvas,ctx,scale;
 
 // ── MENU ──────────────────────────────────
 function setDiff(d){cfg.diff=d;
- ['easy','medium','hard'].forEach(x=>{document.getElementById('btn-'+x).className='btn'+(x===d?' active green':'')});}
+ ['easy','medium','hard'].forEach(x=>{const e=document.getElementById('btn-'+x);e.className='chip'+(x===d?' on-g':'')});}
 function setMap(i){cfg.mapIdx=i;
- for(let j=0;j<5;j++)document.getElementById('map-'+j).className='btn'+(j===i?' active':'');}
+ for(let j=0;j<5;j++){const e=document.getElementById('map-'+j);e.className='chip'+(j===i?' on':'');}}
 function showMenu(){
  document.getElementById('menu').style.display='flex';
  document.getElementById('game-screen').style.display='none';
@@ -221,18 +222,16 @@ function startSingle(){
  ov.style.display='flex';ct.textContent='3';
  const ci=setInterval(()=>{cd--;if(cd>0)ct.textContent=cd;else if(cd===0)ct.textContent='GO!';else{clearInterval(ci);ov.style.display='none';running=true}},1000);
 }
-function startPVP(){}
 
 function pauseGame(){paused=true;document.getElementById('pause-overlay').style.display='flex';}
 function resumeGame(){paused=false;document.getElementById('pause-overlay').style.display='none';}
 function quitGame(){running=false;paused=false;showMenu();}
 
-// ── CANVAS — FULLSCREEN ──────────────────
+// ── CANVAS ────────────────────────────────
 function initCanvas(){
  canvas=document.getElementById('c');ctx=canvas.getContext('2d');
  const wrap=document.getElementById('canvas-wrap');
  const ww=wrap.clientWidth,wh=wrap.clientHeight;
- // Use fractional scale to fill screen as much as possible
  scale=Math.min(ww/MW,wh/MH);
  canvas.width=Math.floor(MW*scale);
  canvas.height=Math.floor(MH*scale);
@@ -256,9 +255,9 @@ function mkTank(id,c,r,dir,isP,pi){
  return{id,x:c*T,y:r*T,dir,spd:TANK_SPD,moving:false,lives:MAX_LIVES,alive:true,
   spawning:true,spawnT:SPAWN_INV,inv:true,invT:SPAWN_INV,
   maxB:1,bSpd:BULLET_SPD,star:false,helmet:false,frozen:false,frozenT:0,
-  isP,pi,lastFire:0,trackOfs:0,_ai:null};}
+  isP,pi,lastFire:0,trackOfs:0,_ai:null,_aiDir:DIR.DOWN,_aiStuck:0,_aiTarget:null};}
 
-// ── GAME LOOP ─────────────────────────────
+// ── GAME LOOP — SMOOTH dt ─────────────────
 let lastT=0;
 function loop(ts){
  requestAnimationFrame(loop);
@@ -285,7 +284,7 @@ function update(dt){
  checkWin();
 }
 
-// ── TANK ──────────────────────────────────
+// ── TANK — dt-scaled movement ─────────────
 function updateTank(tank,inp,dt){
  if(!tank.alive)return;
  if(tank.spawning){tank.spawnT-=dt;if(tank.spawnT<=0){tank.spawning=false;tank.inv=false;tank.invT=0}}
@@ -295,11 +294,10 @@ function updateTank(tank,inp,dt){
  if(inp.up)nd=DIR.UP;else if(inp.down)nd=DIR.DOWN;else if(inp.left)nd=DIR.LEFT;else if(inp.right)nd=DIR.RIGHT;
  tank.moving=nd!==null;
  if(nd!==null){
-  // Animate tracks when moving
   tank.trackOfs=(tank.trackOfs+dt*0.08)%8;
   if(tank.dir!==nd){tank.dir=nd;tank.x=Math.round(tank.x/(T/2))*(T/2);tank.y=Math.round(tank.y/(T/2))*(T/2)}
-  let dx=0,dy=0;
-  if(nd===DIR.UP)dy=-tank.spd;else if(nd===DIR.DOWN)dy=tank.spd;else if(nd===DIR.LEFT)dx=-tank.spd;else dx=tank.spd;
+  const move=tank.spd*dt;
+  const dx=DX[nd]*move,dy=DY[nd]*move;
   const nx=tank.x+dx,ny=tank.y+dy;
   if(nx>=0&&nx<=MW-T&&ny>=0&&ny<=MH-T&&!tileCol(nx,ny)&&!tankCol(nx,ny,tank.id)){tank.x=nx;tank.y=ny}
  }
@@ -314,7 +312,7 @@ function tileCol(x,y){
 function tankCol(x,y,tid){for(const o of world.tanks){if(o.id===tid||!o.alive)continue;if(boxOv(x,y,T,o.x,o.y,T))return true}return false}
 function boxOv(x1,y1,s1,x2,y2,s2){return x1<x2+s2&&x1+s1>x2&&y1<y2+s2&&y1+s1>y2}
 
-// ── BULLETS ───────────────────────────────
+// ── BULLETS — dt-scaled ───────────────────
 function fireBullet(tank){
  const now=performance.now();if(now-tank.lastFire<BULLET_CD)return;
  const active=world.bullets.filter(b=>b.oid===tank.id).length;if(active>=tank.maxB)return;
@@ -330,7 +328,8 @@ function updateBullets(dt){
  const rem=new Set();
  for(let i=0;i<world.bullets.length;i++){
   const b=world.bullets[i];if(rem.has(i))continue;
-  if(b.dir===DIR.UP)b.y-=b.spd;else if(b.dir===DIR.DOWN)b.y+=b.spd;else if(b.dir===DIR.LEFT)b.x-=b.spd;else b.x+=b.spd;
+  const bm=b.spd*dt;
+  b.x+=DX[b.dir]*bm;b.y+=DY[b.dir]*bm;
   if(b.x<0||b.x>=MW||b.y<0||b.y>=MH){rem.add(i);addExp(b.x,b.y,false);continue}
   const col=Math.floor(b.x/T),row=Math.floor(b.y/T);
   if(col>=0&&col<COLS&&row>=0&&row<ROWS){
@@ -405,40 +404,172 @@ function removeShovel(){const base=world.shovelPI===0?world.bases.p1:world.bases
  [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]].forEach(([dr,dc])=>{
   const r=base.r+dr,c=base.c+dc;if(r>=0&&r<ROWS&&c>=0&&c<COLS&&world.map[r][c]===TILE.ST)world.map[r][c]=TILE.BR})}
 
-// ── BOT AI ────────────────────────────────
+// ══════════════════════════════════════════
+// BOT AI — 3 difficulty tiers
+// ══════════════════════════════════════════
 function botThink(w,dt){
  w.botTimer+=dt;
- const interval=cfg.diff==='easy'?600:cfg.diff==='medium'?400:250;
+ const interval=cfg.diff==='easy'?700:cfg.diff==='medium'?350:200;
  if(w.botTimer<interval)return;w.botTimer=0;
  const me=w.tanks[1],en=w.tanks[0];
  if(!me.alive||me.frozen){me._ai={up:false,down:false,left:false,right:false,fire:false};return}
+ if(cfg.diff==='easy')botEasy(w,me,en);
+ else if(cfg.diff==='medium')botMedium(w,me,en);
+ else botHard(w,me,en);
+}
+
+// ── EASY: mostly random patrol ────────────
+function botEasy(w,me,en){
  const ai={up:false,down:false,left:false,right:false,fire:false};
- const fc=cfg.diff==='easy'?0.3:cfg.diff==='medium'?0.5:0.8;
- if(cfg.diff==='hard'&&Math.random()<0.7){
-  const tx=Math.random()<0.6?en.x:w.bases.p1.c*T,ty=Math.random()<0.6?en.y:w.bases.p1.r*T;
-  const dx=tx-me.x,dy=ty-me.y;
-  if(Math.abs(dx)>Math.abs(dy)){if(dx>0)ai.right=true;else ai.left=true}else{if(dy>0)ai.down=true;else ai.up=true}
- }else if(cfg.diff==='medium'&&Math.random()<0.5){
-  const dx=en.x-me.x,dy=en.y-me.y;
-  if(Math.abs(dx)>Math.abs(dy)){if(dx>0)ai.right=true;else ai.left=true}else{if(dy>0)ai.down=true;else ai.up=true}
- }else{
-  const dc=cfg.diff==='easy'?0.15:cfg.diff==='medium'?0.1:0.05;
-  if(Math.random()<dc||isBlocked(w,me)){const d=[DIR.UP,DIR.DOWN,DIR.LEFT,DIR.RIGHT][Math.floor(Math.random()*4)];
-   if(d===DIR.UP)ai.up=true;else if(d===DIR.DOWN)ai.down=true;else if(d===DIR.LEFT)ai.left=true;else ai.right=true;
-  }else{if(me.dir===DIR.UP)ai.up=true;else if(me.dir===DIR.DOWN)ai.down=true;else if(me.dir===DIR.LEFT)ai.left=true;else ai.right=true}
+ // Change direction if blocked or randomly (15%)
+ if(isBlocked(w,me,me._aiDir)||Math.random()<0.15){
+  me._aiDir=[DIR.UP,DIR.DOWN,DIR.LEFT,DIR.RIGHT][Math.floor(Math.random()*4)];
  }
- if(isAligned(me,en)||Math.random()<fc)ai.fire=true;
+ setAiDir(ai,me._aiDir);
+ // Fire if aligned with player, or random 20%
+ if(isAligned(me,en))ai.fire=true;
+ else if(Math.random()<0.2)ai.fire=true;
  me._ai=ai;
 }
-function isBlocked(w,tank){let cx=tank.x,cy=tank.y;
- if(tank.dir===DIR.UP)cy-=T;else if(tank.dir===DIR.DOWN)cy+=T;else if(tank.dir===DIR.LEFT)cx-=T;else cx+=T;
- const c=Math.floor(cx/T),r=Math.floor(cy/T);
- if(c<0||c>=COLS||r<0||r>=ROWS)return true;
- const t=w.map[r][c];return t===TILE.BR||t===TILE.ST||t===TILE.WA||t===TILE.BA;}
+
+// ── MEDIUM: hunt player, avoid obstacles ──
+function botMedium(w,me,en){
+ const ai={up:false,down:false,left:false,right:false,fire:false};
+ const mc=Math.floor(me.x/T+0.5),mr=Math.floor(me.y/T+0.5);
+ const ec=Math.floor(en.x/T+0.5),er=Math.floor(en.y/T+0.5);
+
+ if(Math.random()<0.6&&en.alive){
+  // Hunt player: pick axis with larger distance
+  const dx=ec-mc,dy=er-mr;
+  let wantDir;
+  if(Math.abs(dx)>Math.abs(dy))wantDir=dx>0?DIR.RIGHT:DIR.LEFT;
+  else wantDir=dy>0?DIR.DOWN:DIR.UP;
+  if(!isBlocked(w,me,wantDir)){me._aiDir=wantDir}
+  else{
+   // Try perpendicular
+   const perp=Math.abs(dx)>Math.abs(dy)?
+    (dy>=0?DIR.DOWN:DIR.UP):(dx>=0?DIR.RIGHT:DIR.LEFT);
+   if(!isBlocked(w,me,perp))me._aiDir=perp;
+   else me._aiDir=[DIR.UP,DIR.DOWN,DIR.LEFT,DIR.RIGHT][Math.floor(Math.random()*4)];
+  }
+ }else{
+  // Random patrol
+  if(isBlocked(w,me,me._aiDir)||Math.random()<0.12)
+   me._aiDir=[DIR.UP,DIR.DOWN,DIR.LEFT,DIR.RIGHT][Math.floor(Math.random()*4)];
+ }
+ setAiDir(ai,me._aiDir);
+ // Fire: always when aligned, 35% random
+ if(isAligned(me,en))ai.fire=true;
+ else if(Math.random()<0.35)ai.fire=true;
+ me._ai=ai;
+}
+
+// ── HARD: aggressive hunter with tactics ──
+function botHard(w,me,en){
+ const ai={up:false,down:false,left:false,right:false,fire:false};
+ const mc=Math.floor(me.x/T+0.5),mr=Math.floor(me.y/T+0.5);
+ const ec=Math.floor(en.x/T+0.5),er=Math.floor(en.y/T+0.5);
+ const bc=w.bases.p1.c,br=w.bases.p1.r;
+
+ // Dodge incoming bullets
+ const dodge=dodgeBullet(w,me);
+ if(dodge!==null){
+  me._aiDir=dodge;
+  setAiDir(ai,me._aiDir);
+  ai.fire=isAligned(me,en);
+  me._ai=ai;return;
+ }
+
+ // Go for nearby powerups
+ let nearPU=null,nearDist=999;
+ for(const pu of w.powerUps){
+  const d=Math.abs(pu.x-me.x)+Math.abs(pu.y-me.y);
+  if(d<nearDist){nearDist=d;nearPU=pu;}
+ }
+ if(nearPU&&nearDist<T*5){
+  const dx=nearPU.x-me.x,dy=nearPU.y-me.y;
+  let wantDir=Math.abs(dx)>Math.abs(dy)?(dx>0?DIR.RIGHT:DIR.LEFT):(dy>0?DIR.DOWN:DIR.UP);
+  if(!isBlocked(w,me,wantDir)){me._aiDir=wantDir;setAiDir(ai,me._aiDir);ai.fire=isAligned(me,en);me._ai=ai;return}
+ }
+
+ // Choose target: player or their base
+ let tx,ty;
+ if(en.alive){
+  // Mostly hunt player, sometimes aim for base
+  if(Math.random()<0.75){tx=ec;ty=er}else{tx=bc;ty=br}
+ }else{tx=bc;ty=br}
+
+ const dx=tx-mc,dy=ty-mr;
+ // Smart pathfinding: try primary direction, then alternatives
+ let dirs=[];
+ if(Math.abs(dx)>=Math.abs(dy)){
+  dirs.push(dx>0?DIR.RIGHT:DIR.LEFT);
+  if(dy!==0)dirs.push(dy>0?DIR.DOWN:DIR.UP);
+  dirs.push(dx>0?DIR.LEFT:DIR.RIGHT);
+ }else{
+  dirs.push(dy>0?DIR.DOWN:DIR.UP);
+  if(dx!==0)dirs.push(dx>0?DIR.RIGHT:DIR.LEFT);
+  dirs.push(dy>0?DIR.UP:DIR.DOWN);
+ }
+ // Pick first unblocked
+ let picked=false;
+ for(const d of dirs){
+  if(!isBlocked(w,me,d)){me._aiDir=d;picked=true;break}
+ }
+ if(!picked){
+  // All blocked, try any
+  for(let d=0;d<4;d++)if(!isBlocked(w,me,d)){me._aiDir=d;break}
+ }
+
+ setAiDir(ai,me._aiDir);
+ // Aggressive firing: always when aligned, 55% random (shoot bricks to clear path)
+ if(isAligned(me,en)||isAlignedBase(me,w.bases.p1))ai.fire=true;
+ else if(hasBrickAhead(w,me))ai.fire=true;
+ else if(Math.random()<0.55)ai.fire=true;
+ me._ai=ai;
+}
+
+function setAiDir(ai,d){if(d===DIR.UP)ai.up=true;else if(d===DIR.DOWN)ai.down=true;else if(d===DIR.LEFT)ai.left=true;else ai.right=true}
+
+function isBlocked(w,tank,dir){
+ const step=T*0.6;
+ let cx=tank.x+DX[dir]*step,cy=tank.y+DY[dir]*step;
+ if(cx<0||cx>MW-T||cy<0||cy>MH-T)return true;
+ if(tileCol(cx,cy))return true;
+ if(tankCol(cx,cy,tank.id))return true;
+ return false;
+}
 function isAligned(me,en){
+ if(!en.alive)return false;
  if(Math.abs(me.x-en.x)<T){if(en.y<me.y&&me.dir===DIR.UP)return true;if(en.y>me.y&&me.dir===DIR.DOWN)return true}
  if(Math.abs(me.y-en.y)<T){if(en.x<me.x&&me.dir===DIR.LEFT)return true;if(en.x>me.x&&me.dir===DIR.RIGHT)return true}
- return false;}
+ return false;
+}
+function isAlignedBase(me,base){
+ const bx=base.c*T,by=base.r*T;
+ if(Math.abs(me.x-bx)<T){if(by>me.y&&me.dir===DIR.DOWN)return true;if(by<me.y&&me.dir===DIR.UP)return true}
+ if(Math.abs(me.y-by)<T){if(bx>me.x&&me.dir===DIR.RIGHT)return true;if(bx<me.x&&me.dir===DIR.LEFT)return true}
+ return false;
+}
+function hasBrickAhead(w,me){
+ const fc=Math.floor((me.x+T/2)/T)+DX[me.dir];
+ const fr=Math.floor((me.y+T/2)/T)+DY[me.dir];
+ if(fc<0||fc>=COLS||fr<0||fr>=ROWS)return false;
+ return w.map[fr][fc]===TILE.BR;
+}
+function dodgeBullet(w,me){
+ for(const b of w.bullets){
+  if(b.oid===me.id)continue;
+  const dist=Math.abs(b.x-me.x)+Math.abs(b.y-me.y);
+  if(dist>T*4)continue;
+  // Check if bullet is heading toward us
+  if(b.dir===DIR.UP&&b.y>me.y&&Math.abs(b.x-me.x)<T)return Math.random()<0.5?DIR.LEFT:DIR.RIGHT;
+  if(b.dir===DIR.DOWN&&b.y<me.y&&Math.abs(b.x-me.x)<T)return Math.random()<0.5?DIR.LEFT:DIR.RIGHT;
+  if(b.dir===DIR.LEFT&&b.x>me.x&&Math.abs(b.y-me.y)<T)return Math.random()<0.5?DIR.UP:DIR.DOWN;
+  if(b.dir===DIR.RIGHT&&b.x<me.x&&Math.abs(b.y-me.y)<T)return Math.random()<0.5?DIR.UP:DIR.DOWN;
+ }
+ return null;
+}
 
 // ── WIN ───────────────────────────────────
 function checkWin(){
@@ -459,26 +590,22 @@ function endGame(winner){
  document.getElementById('r-ekills').textContent=world.scores.p2k;
 }
 
-// ── RENDER ────────────────────────────────
+// ══════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════
 function render(){
  ctx.save();ctx.scale(scale,scale);
  ctx.fillStyle=NES.BK;ctx.fillRect(0,0,MW,MH);
- // Map tiles (background)
  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){const t=world.map[r][c],x=c*T,y=r*T;
   if(t===TILE.BR)dBrick(x,y);else if(t===TILE.ST)dSteel(x,y);else if(t===TILE.WA)dWater(x,y);
   else if(t===TILE.BA)dBase(x,y,false);else if(t===TILE.BX)dBase(x,y,true);}
- // Powerups
  for(const pu of world.powerUps)dPowerUp(pu);
- // Tanks
  for(const tank of world.tanks)if(tank.alive)dTank(tank);
- // Bullets
  for(const b of world.bullets){
   ctx.fillStyle=NES.WHT;ctx.fillRect(b.x,b.y,4,4);
   ctx.fillStyle=NES.YEL;ctx.fillRect(b.x+1,b.y+1,2,2);
  }
- // Forest on top (hides tanks)
  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++)if(world.map[r][c]===TILE.FO)dForest(c*T,r*T);
- // Explosions
  for(const e of world.explosions){
   const sizes=[5,9,13,16,13,9];
   const sz=sizes[Math.min(e.f,5)];
@@ -486,7 +613,6 @@ function render(){
   const i=Math.floor(sz*.65);ctx.fillStyle=NES.YEL;ctx.fillRect(e.x-i/2,e.y-i/2,i,i);
   if(e.big){const k=Math.floor(sz*.35);ctx.fillStyle=NES.WHT;ctx.fillRect(e.x-k/2,e.y-k/2,k,k)}
  }
- // Particles
  for(const p of world.particles){
   const a=Math.min(1,p.life/150);
   ctx.globalAlpha=a;ctx.fillStyle=p.color;ctx.fillRect(p.x,p.y,p.sz,p.sz);
@@ -497,25 +623,19 @@ function render(){
 
 // ── TILE RENDERING ───────────────────────
 function dBrick(x,y){
- // NES-style brick pattern: two rows of bricks
  ctx.fillStyle=NES.BR2;ctx.fillRect(x,y,T,T);
  ctx.fillStyle=NES.BR1;
- // Top half: 2 bricks side by side
  ctx.fillRect(x,y,7,3);ctx.fillRect(x+8,y,8,3);
  ctx.fillRect(x,y+4,7,3);ctx.fillRect(x+8,y+4,8,3);
- // Bottom half: offset
  ctx.fillRect(x,y+8,4,3);ctx.fillRect(x+5,y+8,7,3);ctx.fillRect(x+13,y+8,3,3);
  ctx.fillRect(x,y+12,4,3);ctx.fillRect(x+5,y+12,7,3);ctx.fillRect(x+13,y+12,3,3);
- // Mortar lines
  ctx.fillStyle=NES.BR3;
  ctx.fillRect(x+7,y,1,8);ctx.fillRect(x,y+3,T,1);ctx.fillRect(x,y+7,T,1);
  ctx.fillRect(x+4,y+8,1,8);ctx.fillRect(x+12,y+8,1,8);ctx.fillRect(x,y+11,T,1);ctx.fillRect(x,y+15,T,1);
 }
 function dSteel(x,y){
  ctx.fillStyle=NES.ST1;ctx.fillRect(x,y,T,T);
- // Shine effect
  ctx.fillStyle=NES.ST2;ctx.fillRect(x+1,y+1,6,6);ctx.fillRect(x+9,y+9,6,6);
- // Dark edges
  ctx.fillStyle=NES.ST3;
  ctx.fillRect(x,y+T-1,T,1);ctx.fillRect(x+T-1,y,1,T);
  ctx.fillRect(x+7,y,2,T);ctx.fillRect(x,y+7,T,2);
@@ -537,7 +657,6 @@ function dWater(x,y){
 function dForest(x,y){
  ctx.fillStyle=NES.FO1;ctx.fillRect(x,y,T,T);
  ctx.fillStyle=NES.FO2;
- // Tree canopy pattern
  ctx.fillRect(x+2,y+1,5,5);ctx.fillRect(x+9,y+1,5,5);
  ctx.fillRect(x+5,y+6,6,5);ctx.fillRect(x+1,y+9,5,5);ctx.fillRect(x+10,y+9,5,5);
  ctx.fillStyle=NES.FO3;
@@ -551,17 +670,22 @@ function dBase(x,y,dead){
   ctx.fillRect(x+2,y+2,3,3);ctx.fillRect(x+11,y+2,3,3);
   ctx.fillRect(x+6,y+6,4,4);ctx.fillRect(x+2,y+11,3,3);ctx.fillRect(x+11,y+11,3,3);
  }else{
-  // Eagle/Phoenix base icon
+  // Shield silhouette
   ctx.fillStyle=NES.BA1;ctx.fillRect(x,y,T,T);
   ctx.fillStyle=NES.BA2;
-  ctx.fillRect(x+3,y+1,10,2);  // top
-  ctx.fillRect(x+5,y+3,6,2);   // neck
-  ctx.fillRect(x+3,y+5,10,4);  // body
-  ctx.fillRect(x+5,y+9,6,2);   // bottom body
-  ctx.fillRect(x+4,y+11,8,3);  // base
+  // Shield outline: rounded top, pointed bottom
+  ctx.fillRect(x+3,y+1,10,2);   // top edge
+  ctx.fillRect(x+2,y+3,12,2);   // upper body wide
+  ctx.fillRect(x+2,y+5,12,2);   // mid body wide
+  ctx.fillRect(x+3,y+7,10,2);   // narrowing
+  ctx.fillRect(x+4,y+9,8,2);    // narrowing more
+  ctx.fillRect(x+5,y+11,6,2);   // near point
+  ctx.fillRect(x+6,y+13,4,1);   // tip
+  ctx.fillRect(x+7,y+14,2,1);   // point
+  // Inner emblem: cross/star
   ctx.fillStyle=NES.BA3;
-  ctx.fillRect(x+6,y+6,4,2);   // center detail
-  ctx.fillRect(x+7,y+2,2,2);   // eye
+  ctx.fillRect(x+7,y+3,2,8);    // vertical bar
+  ctx.fillRect(x+4,y+5,8,2);    // horizontal bar
  }
 }
 
@@ -579,79 +703,40 @@ function dTank(tank){
  const gun=p?NES.P1G:NES.P2G;
  const hl=p?NES.P1HL:NES.P2HL;
  const tOfs=Math.floor(tank.trackOfs)%4;
-
- // LEFT TRACK
- ctx.fillStyle=tracks;
- ctx.fillRect(0,0,3,T);
+ ctx.fillStyle=tracks;ctx.fillRect(0,0,3,T);
  ctx.fillStyle=NES.DGRAY;
  for(let i=tOfs;i<T;i+=4)ctx.fillRect(0,i,3,2);
-
- // RIGHT TRACK
- ctx.fillStyle=tracks;
- ctx.fillRect(T-3,0,3,T);
+ ctx.fillStyle=tracks;ctx.fillRect(T-3,0,3,T);
  ctx.fillStyle=NES.DGRAY;
  for(let i=tOfs;i<T;i+=4)ctx.fillRect(T-3,i,3,2);
-
- // BODY
- ctx.fillStyle=body;
- ctx.fillRect(3,2,T-6,T-3);
- // Body highlight
- ctx.fillStyle=hl;
- ctx.fillRect(4,3,3,3);
- // Body shadow
- ctx.fillStyle=tracks;
- ctx.fillRect(3,T-2,T-6,1);
- ctx.fillRect(T-4,2,1,T-3);
-
- // TURRET (circle area)
- ctx.fillStyle=gun;
- ctx.fillRect(5,5,6,6);
- ctx.fillStyle=body;
- ctx.fillRect(6,6,4,4);
-
- // GUN BARREL
- ctx.fillStyle=gun;
- ctx.fillRect(T/2-1,0,2,6);
- // Barrel tip
- ctx.fillStyle=NES.GRAY;
- ctx.fillRect(T/2-1,0,2,1);
-
- // Shield glow
+ ctx.fillStyle=body;ctx.fillRect(3,2,T-6,T-3);
+ ctx.fillStyle=hl;ctx.fillRect(4,3,3,3);
+ ctx.fillStyle=tracks;ctx.fillRect(3,T-2,T-6,1);ctx.fillRect(T-4,2,1,T-3);
+ ctx.fillStyle=gun;ctx.fillRect(5,5,6,6);
+ ctx.fillStyle=body;ctx.fillRect(6,6,4,4);
+ ctx.fillStyle=gun;ctx.fillRect(T/2-1,0,2,6);
+ ctx.fillStyle=NES.GRAY;ctx.fillRect(T/2-1,0,2,1);
  if(tank.inv&&!tank.spawning){
   const blink=Math.floor(performance.now()/60)%3;
-  if(blink<2){
-   ctx.strokeStyle=blink===0?NES.WHT:NES.BLU;
-   ctx.lineWidth=1;ctx.strokeRect(-1,-1,T+2,T+2);
-  }
+  if(blink<2){ctx.strokeStyle=blink===0?NES.WHT:NES.BLU;ctx.lineWidth=1;ctx.strokeRect(-1,-1,T+2,T+2)}
  }
- // Frozen indicator
- if(tank.frozen){
-  ctx.globalAlpha=0.4;ctx.fillStyle=NES.BLU;ctx.fillRect(0,0,T,T);ctx.globalAlpha=1;
- }
+ if(tank.frozen){ctx.globalAlpha=0.4;ctx.fillStyle=NES.BLU;ctx.fillRect(0,0,T,T);ctx.globalAlpha=1}
  ctx.restore();
 }
 
 // ── POWERUP RENDERING ─────────────────────
 function dPowerUp(pu){
- if(Math.floor(pu.bt/250)%2===0)return; // blink
+ if(Math.floor(pu.bt/250)%2===0)return;
  const x=pu.x,y=pu.y;
- // Background
  ctx.fillStyle=NES.PU_BG;ctx.fillRect(x,y,T,T);
  ctx.fillStyle=NES.PU_FG;
- // Icon per type
  switch(pu.type){
-  case'star':  // star shape
-   ctx.fillRect(x+6,y+2,4,3);ctx.fillRect(x+3,y+5,10,3);ctx.fillRect(x+5,y+8,6,3);ctx.fillRect(x+4,y+11,3,3);ctx.fillRect(x+9,y+11,3,3);break;
-  case'helmet': // shield
-   ctx.fillRect(x+3,y+2,10,3);ctx.fillRect(x+3,y+5,10,4);ctx.fillRect(x+5,y+9,6,3);ctx.fillRect(x+6,y+12,4,2);break;
-  case'grenade': // boom
-   ctx.fillRect(x+5,y+2,6,2);ctx.fillRect(x+3,y+4,10,8);ctx.fillRect(x+5,y+12,6,2);break;
-  case'timer': // clock
-   ctx.fillRect(x+4,y+2,8,2);ctx.fillRect(x+3,y+4,10,8);ctx.fillRect(x+4,y+12,8,2);ctx.fillStyle=NES.PU_BG;ctx.fillRect(x+6,y+6,4,4);break;
-  case'shovel': // wall
-   ctx.fillRect(x+2,y+2,12,4);ctx.fillRect(x+2,y+6,4,8);ctx.fillRect(x+10,y+6,4,8);ctx.fillRect(x+6,y+10,4,4);break;
-  case'tank': // +1
-   ctx.fillRect(x+3,y+3,4,10);ctx.fillRect(x+2,y+5,6,2);ctx.fillRect(x+10,y+4,3,8);ctx.fillRect(x+9,y+3,5,2);ctx.fillRect(x+9,y+11,5,2);break;
+  case'star':ctx.fillRect(x+6,y+2,4,3);ctx.fillRect(x+3,y+5,10,3);ctx.fillRect(x+5,y+8,6,3);ctx.fillRect(x+4,y+11,3,3);ctx.fillRect(x+9,y+11,3,3);break;
+  case'helmet':ctx.fillRect(x+3,y+2,10,3);ctx.fillRect(x+3,y+5,10,4);ctx.fillRect(x+5,y+9,6,3);ctx.fillRect(x+6,y+12,4,2);break;
+  case'grenade':ctx.fillRect(x+5,y+2,6,2);ctx.fillRect(x+3,y+4,10,8);ctx.fillRect(x+5,y+12,6,2);break;
+  case'timer':ctx.fillRect(x+4,y+2,8,2);ctx.fillRect(x+3,y+4,10,8);ctx.fillRect(x+4,y+12,8,2);ctx.fillStyle=NES.PU_BG;ctx.fillRect(x+6,y+6,4,4);break;
+  case'shovel':ctx.fillRect(x+2,y+2,12,4);ctx.fillRect(x+2,y+6,4,8);ctx.fillRect(x+10,y+6,4,8);ctx.fillRect(x+6,y+10,4,4);break;
+  case'tank':ctx.fillRect(x+3,y+3,4,10);ctx.fillRect(x+2,y+5,6,2);ctx.fillRect(x+10,y+4,3,8);ctx.fillRect(x+9,y+3,5,2);ctx.fillRect(x+9,y+11,5,2);break;
  }
 }
 
@@ -660,7 +745,6 @@ function setInput(dir,val){
  if(val){input.up=false;input.down=false;input.left=false;input.right=false}
  input[dir]=val;
 }
-// D-pad with visual feedback
 document.querySelectorAll('.d-btn').forEach(btn=>{
  const dir=btn.dataset.dir;
  const press=()=>{setInput(dir,true);btn.classList.add('pressed')};
@@ -679,7 +763,6 @@ fb.addEventListener('touchcancel',()=>{input.fire=false;fb.classList.remove('pre
 fb.addEventListener('mousedown',()=>{input.fire=true;fb.classList.add('pressed')});
 fb.addEventListener('mouseup',()=>{input.fire=false;fb.classList.remove('pressed')});
 
-// Keyboard
 document.addEventListener('keydown',e=>{
  if(e.key==='ArrowUp'||e.key==='w')setInput('up',true);
  if(e.key==='ArrowDown'||e.key==='s')setInput('down',true);
@@ -696,9 +779,7 @@ document.addEventListener('keyup',e=>{
  if(e.key===' '||e.key==='Enter')input.fire=false;
 });
 
-// Resize handler
 window.addEventListener('resize',()=>{if(running)initCanvas()});
-
 window.onBackPressed=function(){if(running&&!paused)pauseGame();else if(paused)quitGame()};
 window.onGamePause=function(){if(running)pauseGame()};
 window.onGameResume=function(){};
