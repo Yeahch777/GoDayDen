@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Battle Tanks: Seeker Edition</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;touch-action:manipulation}
 html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Courier New',monospace;color:#fcfcfc}
 .screen{position:absolute;top:0;left:0;width:100%;height:100%;display:none;flex-direction:column}
 #menu{display:flex;align-items:center;justify-content:center;overflow-y:auto}
@@ -27,22 +27,23 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Co
 .big-btn.gray{background:#333;color:#888;margin-top:8px;font-size:14px;letter-spacing:2px}
 .play-sub{font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px}
 canvas{display:block;image-rendering:pixelated;image-rendering:crisp-edges}
-#hud{height:40px;background:#1c1c1c;display:flex;align-items:center;justify-content:space-between;padding:0 14px;font-size:13px;flex-shrink:0}
-#hud2{height:30px;background:#111;display:flex;align-items:center;justify-content:space-between;padding:0 14px;font-size:11px;flex-shrink:0}
+#game-screen{position:relative}
+#canvas-wrap{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#111}
+#hud{position:absolute;top:0;left:0;width:100%;height:36px;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:space-between;padding:0 14px;font-size:12px;z-index:5}
+#hud2{position:absolute;top:36px;left:0;width:100%;height:26px;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:space-between;padding:0 14px;font-size:11px;z-index:5}
 .lives{display:flex;gap:3px;align-items:center}
-.life-box{width:12px;height:12px;border-radius:2px}
-#canvas-wrap{flex:1;display:flex;align-items:center;justify-content:center;background:#000;overflow:hidden}
-#controls{display:flex;justify-content:space-between;align-items:center;padding:12px 24px;background:#1c1c1c;flex-shrink:0;padding-bottom:max(12px,env(safe-area-inset-bottom))}
-#dpad{width:150px;height:150px;position:relative}
-.d-btn{position:absolute;width:48px;height:48px;background:#333;border:1px solid #555;display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;border-radius:4px}
-.d-btn:active{background:#555}
-.d-up{top:0;left:51px}
-.d-down{bottom:0;left:51px}
-.d-left{top:51px;left:0}
-.d-right{top:51px;right:0}
-.d-center{position:absolute;top:51px;left:51px;width:48px;height:48px;background:#222;border-radius:4px}
-#fire-btn{width:80px;height:80px;border-radius:50%;background:#FC0000;border:3px solid #cc0000;color:#fff;font-family:'Courier New',monospace;font-size:15px;font-weight:bold;display:flex;align-items:center;justify-content:center}
-#fire-btn:active{background:#cc0000}
+.life-box{width:10px;height:10px;border-radius:2px}
+#controls{position:absolute;bottom:0;left:0;width:100%;display:flex;justify-content:space-between;align-items:flex-end;padding:16px 20px;padding-bottom:max(16px,env(safe-area-inset-bottom));z-index:5;pointer-events:none}
+#dpad{width:140px;height:140px;position:relative;pointer-events:auto;opacity:0.85}
+.d-btn{position:absolute;width:44px;height:44px;background:rgba(255,255,255,0.12);border:2px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:18px;color:rgba(255,255,255,0.7);border-radius:8px}
+.d-btn.pressed{background:rgba(255,255,255,0.35);border-color:rgba(255,255,255,0.6);color:#fff}
+.d-up{top:0;left:48px}
+.d-down{bottom:0;left:48px}
+.d-left{top:48px;left:0}
+.d-right{top:48px;right:0}
+.d-center{position:absolute;top:48px;left:48px;width:44px;height:44px;background:rgba(255,255,255,0.05);border-radius:8px}
+#fire-btn{width:76px;height:76px;border-radius:50%;background:rgba(252,0,0,0.6);border:3px solid rgba(252,0,0,0.8);color:rgba(255,255,255,0.9);font-family:'Courier New',monospace;font-size:13px;font-weight:bold;display:flex;align-items:center;justify-content:center;pointer-events:auto;opacity:0.85}
+#fire-btn.pressed{background:rgba(252,0,0,0.9);border-color:#ff4444}
 #countdown-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);display:flex;align-items:center;justify-content:center;z-index:10}
 #countdown-text{font-size:80px;font-weight:bold;color:#FCE83A}
 .result-banner{width:90%;max-width:360px;padding:24px;border-radius:12px;text-align:center;margin-bottom:24px}
@@ -57,8 +58,9 @@ canvas{display:block;image-rendering:pixelated;image-rendering:crisp-edges}
 .r-btn.primary{background:#3CBF3C}
 .r-btn.secondary{background:transparent;border:2px solid #444;color:#888}
 .version{color:#333;font-size:10px;margin-top:24px;text-align:center}
-.pause-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:20;gap:16px}
+.pause-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:20;gap:16px}
 .pause-title{font-size:32px;font-weight:bold;color:#FCE83A;letter-spacing:4px;margin-bottom:16px}
+#pause-btn{position:absolute;top:4px;right:6px;background:none;border:none;color:rgba(255,255,255,0.4);font-size:20px;z-index:6;padding:8px;cursor:pointer}
 </style>
 </head>
 <body>
@@ -69,13 +71,9 @@ canvas{display:block;image-rendering:pixelated;image-rendering:crisp-edges}
   <div class="title">BATTLE TANKS</div>
   <div class="subtitle">SEEKER EDITION</div>
   <div class="title-line"></div>
-
-  <!-- SINGLE PLAYER — main action -->
   <button class="big-btn green" onclick="startSingle()">
    SINGLE PLAYER<br><span class="play-sub">Play vs Bot — Free</span>
   </button>
-
-  <!-- BOT DIFFICULTY -->
   <div class="section" id="diff-section">
    <div class="section-title">DIFFICULTY</div>
    <div class="row">
@@ -84,8 +82,6 @@ canvas{display:block;image-rendering:pixelated;image-rendering:crisp-edges}
     <div class="btn" id="btn-hard" onclick="setDiff('hard')">HARD</div>
    </div>
   </div>
-
-  <!-- MAP SELECT -->
   <div class="section">
    <div class="section-title">MAP</div>
    <div class="row">
@@ -96,13 +92,9 @@ canvas{display:block;image-rendering:pixelated;image-rendering:crisp-edges}
     <div class="btn" id="map-4" onclick="setMap(4)">Steel</div>
    </div>
   </div>
-
-  <!-- PVP ONLINE (future) -->
   <button class="big-btn blue" onclick="startPVP()" style="opacity:0.4;pointer-events:none">
    PVP ONLINE<br><span class="play-sub">Coming soon — Connect Wallet</span>
   </button>
-
-  <!-- BET SECTION (future, disabled) -->
   <div class="section" style="opacity:0.3">
    <div class="section-title">BET (requires wallet)</div>
    <div class="row">
@@ -112,23 +104,23 @@ canvas{display:block;image-rendering:pixelated;image-rendering:crisp-edges}
     <div class="btn" id="bet-3">5.0</div>
    </div>
   </div>
-
-  <div class="version">v0.2.0 — Solana Seeker | API 34</div>
+  <div class="version">v0.3.0 — Solana Seeker</div>
  </div>
 </div>
 
 <!-- GAME -->
 <div class="screen" id="game-screen">
+ <div id="canvas-wrap"><canvas id="c"></canvas></div>
  <div id="hud">
   <span style="color:#3CBF3C;font-weight:bold" id="hud-mode">MEDIUM</span>
-  <span id="hud-timer" style="font-weight:bold;font-size:16px">5:00</span>
-  <span style="color:#666;font-size:11px" id="hud-map">Classic</span>
+  <span id="hud-timer" style="font-weight:bold;font-size:15px;color:#FCE83A">5:00</span>
+  <span style="color:#666;font-size:10px" id="hud-map">Classic</span>
  </div>
  <div id="hud2">
-  <div style="display:flex;align-items:center;gap:6px"><span style="color:#FCE83A">YOU</span><div id="p1-lives" class="lives"></div></div>
-  <div style="display:flex;align-items:center;gap:6px"><div id="p2-lives" class="lives"></div><span style="color:#3CBF3C">BOT</span></div>
+  <div style="display:flex;align-items:center;gap:5px"><span style="color:#FCE83A;font-size:10px">YOU</span><div id="p1-lives" class="lives"></div></div>
+  <div style="display:flex;align-items:center;gap:5px"><div id="p2-lives" class="lives"></div><span style="color:#3CBF3C;font-size:10px">BOT</span></div>
  </div>
- <div id="canvas-wrap"><canvas id="c"></canvas></div>
+ <button id="pause-btn" onclick="pauseGame()">&#10074;&#10074;</button>
  <div id="controls">
   <div id="dpad">
    <div class="d-btn d-up" data-dir="up">&#9650;</div>
@@ -161,21 +153,30 @@ canvas{display:block;image-rendering:pixelated;image-rendering:crisp-edges}
 
 <script>
 // ══════════════════════════════════════════════════════
-// BATTLE TANKS: SEEKER EDITION v0.2
-// Full game engine — Seeker compatible (API 24+)
+// BATTLE TANKS: SEEKER EDITION v0.3
+// Improved graphics, fullscreen, responsive controls
 // ══════════════════════════════════════════════════════
 
 const T=16,COLS=13,ROWS=13,MW=COLS*T,MH=ROWS*T;
 const MATCH_TIME=300000;
-const TANK_SPD=1,BULLET_SPD=3,BULLET_FAST=5;
-const MAX_LIVES=3,SPAWN_INV=3000,BULLET_CD=500;
+const TANK_SPD=1.2,BULLET_SPD=3,BULLET_FAST=5;
+const MAX_LIVES=3,SPAWN_INV=3000,BULLET_CD=400;
 const PU_INTERVAL=15000,HELMET_T=10000,TIMER_T=5000,SHOVEL_T=15000;
 const DIR={UP:0,RIGHT:1,DOWN:2,LEFT:3};
 const TILE={E:0,BR:1,ST:2,FO:3,WA:4,BA:5,BX:6};
 const PU_TYPES=['star','helmet','grenade','timer','shovel','tank'];
-const C={BK:'#000',WH:'#fcfcfc',P1:'#FCE83A',P1T:'#A46422',P1G:'#7C7C7C',P2:'#3CBF3C',P2T:'#0C8020',P2G:'#7C7C7C',
-  BR:'#BC4430',BRD:'#8C2020',ST:'#C0C0C0',STD:'#808080',WA:'#3CBCFC',WAD:'#0078F8',FO:'#00A800',FOD:'#006800',
-  BA:'#FC9838',BAD:'#A45000',RED:'#FC0000',YEL:'#FCE83A'};
+const NES={
+ BK:'#0f0f0f',GRAY:'#585858',DGRAY:'#303030',
+ P1B:'#F8D800',P1T:'#B86800',P1G:'#989898',P1HL:'#FCF87C',
+ P2B:'#00B800',P2T:'#006800',P2G:'#787878',P2HL:'#58F898',
+ BR1:'#B84000',BR2:'#D87800',BR3:'#682800',
+ ST1:'#B8B8B8',ST2:'#E8E8E8',ST3:'#787878',
+ WA1:'#2038EC',WA2:'#3CBCFC',WA3:'#0078F8',
+ FO1:'#008800',FO2:'#00A800',FO3:'#005800',
+ BA1:'#F8A800',BA2:'#F8D800',BA3:'#885800',
+ RED:'#D82800',YEL:'#F8D800',WHT:'#FCFCFC',BLU:'#0058F8',
+ PU_BG:'#D82800',PU_FG:'#F8D800'
+};
 const MAP_NAMES=['Classic','Fortress','Forest','River','Steel'];
 
 const MAPS=[
@@ -214,28 +215,29 @@ function startSingle(){
  document.getElementById('pause-overlay').style.display='none';
  initCanvas();initWorld();
  running=false;paused=false;
- // Countdown
  let cd=3;
  const ov=document.getElementById('countdown-overlay');
  const ct=document.getElementById('countdown-text');
  ov.style.display='flex';ct.textContent='3';
  const ci=setInterval(()=>{cd--;if(cd>0)ct.textContent=cd;else if(cd===0)ct.textContent='GO!';else{clearInterval(ci);ov.style.display='none';running=true}},1000);
 }
-function startPVP(){/* future */}
+function startPVP(){}
 
 function pauseGame(){paused=true;document.getElementById('pause-overlay').style.display='flex';}
 function resumeGame(){paused=false;document.getElementById('pause-overlay').style.display='none';}
 function quitGame(){running=false;paused=false;showMenu();}
 
-// ── CANVAS ────────────────────────────────
+// ── CANVAS — FULLSCREEN ──────────────────
 function initCanvas(){
  canvas=document.getElementById('c');ctx=canvas.getContext('2d');
  const wrap=document.getElementById('canvas-wrap');
  const ww=wrap.clientWidth,wh=wrap.clientHeight;
- // Scale to fit, max integer scale for crisp pixels
- scale=Math.max(1,Math.min(Math.floor(ww/MW),Math.floor(wh/MH)));
- canvas.width=MW*scale;canvas.height=MH*scale;
- canvas.style.width=canvas.width+'px';canvas.style.height=canvas.height+'px';
+ // Use fractional scale to fill screen as much as possible
+ scale=Math.min(ww/MW,wh/MH);
+ canvas.width=Math.floor(MW*scale);
+ canvas.height=Math.floor(MH*scale);
+ canvas.style.width=canvas.width+'px';
+ canvas.style.height=canvas.height+'px';
  ctx.imageSmoothingEnabled=false;
 }
 
@@ -245,7 +247,7 @@ function initWorld(){
  const m=MAPS[cfg.mapIdx].map(r=>[...r]);
  world={map:m,state:'playing',timeLeft:MATCH_TIME,
   tanks:[mkTank('p1',6,12,DIR.UP,true,0),mkTank('p2',6,0,DIR.DOWN,false,1)],
-  bullets:[],powerUps:[],explosions:[],
+  bullets:[],powerUps:[],explosions:[],particles:[],
   bases:{p1:{r:12,c:6,dead:false},p2:{r:0,c:6,dead:false}},
   scores:{p1k:0,p2k:0},shovel:false,shovelT:0,shovelPI:-1,puTimer:0,botTimer:0};
  updateLivesUI();
@@ -254,7 +256,7 @@ function mkTank(id,c,r,dir,isP,pi){
  return{id,x:c*T,y:r*T,dir,spd:TANK_SPD,moving:false,lives:MAX_LIVES,alive:true,
   spawning:true,spawnT:SPAWN_INV,inv:true,invT:SPAWN_INV,
   maxB:1,bSpd:BULLET_SPD,star:false,helmet:false,frozen:false,frozenT:0,
-  isP,pi,lastFire:0,af:0,at:0,_ai:null};}
+  isP,pi,lastFire:0,trackOfs:0,_ai:null};}
 
 // ── GAME LOOP ─────────────────────────────
 let lastT=0;
@@ -273,12 +275,12 @@ function update(dt){
  if(w.timeLeft<=0){endGame('draw');return}
  const mins=Math.floor(w.timeLeft/60000),secs=Math.floor((w.timeLeft%60000)/1000);
  document.getElementById('hud-timer').textContent=mins+':'+String(secs).padStart(2,'0');
-
  botThink(w,dt);
  updateTank(w.tanks[0],input,dt);
  updateTank(w.tanks[1],w.tanks[1]._ai||{up:false,down:false,left:false,right:false,fire:false},dt);
  updateBullets(dt);
- w.explosions=w.explosions.filter(e=>{e.t+=dt;if(e.t>80){e.t=0;e.f++}return e.f<e.mf});
+ w.explosions=w.explosions.filter(e=>{e.t+=dt;if(e.t>60){e.t=0;e.f++}return e.f<e.mf});
+ w.particles=w.particles.filter(p=>{p.life-=dt;p.x+=p.vx*dt/16;p.y+=p.vy*dt/16;return p.life>0});
  updatePU(dt);
  checkWin();
 }
@@ -289,11 +291,12 @@ function updateTank(tank,inp,dt){
  if(tank.spawning){tank.spawnT-=dt;if(tank.spawnT<=0){tank.spawning=false;tank.inv=false;tank.invT=0}}
  if(tank.inv&&!tank.spawning){tank.invT-=dt;if(tank.invT<=0){tank.inv=false;tank.helmet=false}}
  if(tank.frozen){tank.frozenT-=dt;if(tank.frozenT<=0)tank.frozen=false;return}
- tank.at+=dt;if(tank.at>100){tank.at=0;tank.af=(tank.af+1)%2}
  let nd=null;
  if(inp.up)nd=DIR.UP;else if(inp.down)nd=DIR.DOWN;else if(inp.left)nd=DIR.LEFT;else if(inp.right)nd=DIR.RIGHT;
  tank.moving=nd!==null;
  if(nd!==null){
+  // Animate tracks when moving
+  tank.trackOfs=(tank.trackOfs+dt*0.08)%8;
   if(tank.dir!==nd){tank.dir=nd;tank.x=Math.round(tank.x/(T/2))*(T/2);tank.y=Math.round(tank.y/(T/2))*(T/2)}
   let dx=0,dy=0;
   if(nd===DIR.UP)dy=-tank.spd;else if(nd===DIR.DOWN)dy=tank.spd;else if(nd===DIR.LEFT)dx=-tank.spd;else dx=tank.spd;
@@ -332,7 +335,7 @@ function updateBullets(dt){
   const col=Math.floor(b.x/T),row=Math.floor(b.y/T);
   if(col>=0&&col<COLS&&row>=0&&row<ROWS){
    const t=world.map[row][col];
-   if(t===TILE.BR){world.map[row][col]=TILE.E;rem.add(i);addExp(b.x,b.y,false);continue}
+   if(t===TILE.BR){world.map[row][col]=TILE.E;rem.add(i);addExp(b.x,b.y,false);spawnDebris(col*T+T/2,row*T+T/2,NES.BR1);continue}
    if(t===TILE.ST){if(b.pw)world.map[row][col]=TILE.E;rem.add(i);addExp(b.x,b.y,false);continue}
    if(t===TILE.BA){world.map[row][col]=TILE.BX;rem.add(i);addExp(b.x,b.y,true);
     if(row===world.bases.p1.r&&col===world.bases.p1.c)world.bases.p1.dead=true;
@@ -349,6 +352,7 @@ function updateBullets(dt){
 }
 function hitTank(tank,aid){
  tank.lives--;addExp(tank.x+T/2,tank.y+T/2,true);
+ spawnDebris(tank.x+T/2,tank.y+T/2,tank.pi===0?NES.P1B:NES.P2B);
  if(tank.pi===0)world.scores.p2k++;else world.scores.p1k++;
  if(tank.lives<=0)tank.alive=false;else respawn(tank);
  updateLivesUI();
@@ -359,11 +363,17 @@ function respawn(tank){
  tank.spawning=true;tank.spawnT=SPAWN_INV;tank.inv=true;tank.invT=SPAWN_INV;
  tank.star=false;tank.maxB=1;tank.bSpd=BULLET_SPD;tank.frozen=false;
 }
-function addExp(x,y,big){world.explosions.push({x,y,f:0,mf:big?5:3,t:0,big})}
+function addExp(x,y,big){world.explosions.push({x,y,f:0,mf:big?6:3,t:0,big})}
+function spawnDebris(x,y,color){
+ for(let i=0;i<6;i++){
+  const a=Math.random()*Math.PI*2,s=0.5+Math.random()*1.5;
+  world.particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:300+Math.random()*200,color,sz:1+Math.random()*2});
+ }
+}
 function updateLivesUI(){
  const mk=(n,col)=>{let s='';for(let i=0;i<n;i++)s+='<div class="life-box" style="background:'+col+'"></div>';return s};
- document.getElementById('p1-lives').innerHTML=mk(Math.max(0,world.tanks[0].lives),C.P1);
- document.getElementById('p2-lives').innerHTML=mk(Math.max(0,world.tanks[1].lives),C.P2);
+ document.getElementById('p1-lives').innerHTML=mk(Math.max(0,world.tanks[0].lives),NES.P1B);
+ document.getElementById('p2-lives').innerHTML=mk(Math.max(0,world.tanks[1].lives),NES.P2B);
 }
 
 // ── POWERUPS ──────────────────────────────
@@ -403,7 +413,6 @@ function botThink(w,dt){
  if(!me.alive||me.frozen){me._ai={up:false,down:false,left:false,right:false,fire:false};return}
  const ai={up:false,down:false,left:false,right:false,fire:false};
  const fc=cfg.diff==='easy'?0.3:cfg.diff==='medium'?0.5:0.8;
-
  if(cfg.diff==='hard'&&Math.random()<0.7){
   const tx=Math.random()<0.6?en.x:w.bases.p1.c*T,ty=Math.random()<0.6?en.y:w.bases.p1.r*T;
   const dx=tx-me.x,dy=ty-me.y;
@@ -452,54 +461,244 @@ function endGame(winner){
 // ── RENDER ────────────────────────────────
 function render(){
  ctx.save();ctx.scale(scale,scale);
- ctx.fillStyle=C.BK;ctx.fillRect(0,0,MW,MH);
+ ctx.fillStyle=NES.BK;ctx.fillRect(0,0,MW,MH);
+ // Map tiles (background)
  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){const t=world.map[r][c],x=c*T,y=r*T;
   if(t===TILE.BR)dBrick(x,y);else if(t===TILE.ST)dSteel(x,y);else if(t===TILE.WA)dWater(x,y);
   else if(t===TILE.BA)dBase(x,y,false);else if(t===TILE.BX)dBase(x,y,true);}
- for(const pu of world.powerUps){if(Math.floor(pu.bt/200)%2!==0){ctx.fillStyle=C.WH;ctx.fillRect(pu.x,pu.y,T,T);ctx.fillStyle=C.RED;ctx.fillRect(pu.x+3,pu.y+3,T-6,T-6)}}
+ // Powerups
+ for(const pu of world.powerUps)dPowerUp(pu);
+ // Tanks
  for(const tank of world.tanks)if(tank.alive)dTank(tank);
- for(const b of world.bullets){ctx.fillStyle=C.WH;ctx.fillRect(b.x,b.y,4,4);ctx.fillStyle=C.YEL;ctx.fillRect(b.x+1,b.y+1,2,2)}
+ // Bullets
+ for(const b of world.bullets){
+  ctx.fillStyle=NES.WHT;ctx.fillRect(b.x,b.y,4,4);
+  ctx.fillStyle=NES.YEL;ctx.fillRect(b.x+1,b.y+1,2,2);
+ }
+ // Forest on top (hides tanks)
  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++)if(world.map[r][c]===TILE.FO)dForest(c*T,r*T);
- for(const e of world.explosions){const sz=[4,8,12,16,12,8][Math.min(e.f,5)];
-  ctx.fillStyle=C.RED;ctx.fillRect(e.x-sz/2,e.y-sz/2,sz,sz);
-  const i=Math.floor(sz*.6);ctx.fillStyle=C.YEL;ctx.fillRect(e.x-i/2,e.y-i/2,i,i);
-  const k=Math.floor(sz*.3);ctx.fillStyle=C.WH;ctx.fillRect(e.x-k/2,e.y-k/2,k,k)}
+ // Explosions
+ for(const e of world.explosions){
+  const sizes=[5,9,13,16,13,9];
+  const sz=sizes[Math.min(e.f,5)];
+  ctx.fillStyle=NES.RED;ctx.fillRect(e.x-sz/2,e.y-sz/2,sz,sz);
+  const i=Math.floor(sz*.65);ctx.fillStyle=NES.YEL;ctx.fillRect(e.x-i/2,e.y-i/2,i,i);
+  if(e.big){const k=Math.floor(sz*.35);ctx.fillStyle=NES.WHT;ctx.fillRect(e.x-k/2,e.y-k/2,k,k)}
+ }
+ // Particles
+ for(const p of world.particles){
+  const a=Math.min(1,p.life/150);
+  ctx.globalAlpha=a;ctx.fillStyle=p.color;ctx.fillRect(p.x,p.y,p.sz,p.sz);
+ }
+ ctx.globalAlpha=1;
  ctx.restore();
 }
-function dBrick(x,y){ctx.fillStyle=C.BR;ctx.fillRect(x,y,T,T);ctx.fillStyle=C.BRD;for(let r=0;r<4;r++)for(let c=0;c<4;c++)ctx.fillRect(x+c*4+(r%2===0?0:2),y+r*4,1,4)}
-function dSteel(x,y){ctx.fillStyle=C.ST;ctx.fillRect(x,y,T,T);ctx.fillStyle=C.STD;ctx.fillRect(x,y,T,1);ctx.fillRect(x,y,1,T);ctx.fillRect(x+T-1,y,1,T);ctx.fillRect(x,y+T-1,T,1)}
-function dWater(x,y){ctx.fillStyle=C.WA;ctx.fillRect(x,y,T,T);ctx.fillStyle=C.WAD;const t=performance.now()/300;for(let i=0;i<T;i+=4)ctx.fillRect(x+i,y+Math.floor(Math.sin(t+i/4)*2)+T/2,3,1)}
-function dForest(x,y){ctx.fillStyle=C.FO;ctx.fillRect(x,y,T,T);ctx.fillStyle=C.FOD;ctx.fillRect(x+2,y+2,4,4);ctx.fillRect(x+10,y+2,4,4);ctx.fillRect(x+6,y+8,4,4)}
-function dBase(x,y,dead){if(dead){ctx.fillStyle=C.BRD;ctx.fillRect(x,y,T,T);ctx.fillStyle=C.RED;ctx.fillRect(x+3,y+3,2,2);ctx.fillRect(x+11,y+3,2,2);ctx.fillRect(x+7,y+7,2,2);ctx.fillRect(x+3,y+11,2,2);ctx.fillRect(x+11,y+11,2,2)}
- else{ctx.fillStyle=C.BA;ctx.fillRect(x,y,T,T);ctx.fillStyle=C.BAD;ctx.fillRect(x+4,y+2,8,2);ctx.fillRect(x+6,y+4,4,8);ctx.fillRect(x+4,y+12,8,2)}}
-function dTank(tank){if(tank.spawning&&Math.floor(performance.now()/100)%2===0)return;
- ctx.save();const cx=tank.x+T/2,cy=tank.y+T/2;ctx.translate(cx,cy);ctx.rotate([0,Math.PI/2,Math.PI,-Math.PI/2][tank.dir]);ctx.translate(-T/2,-T/2);
- const p=tank.pi===0;const body=p?C.P1:C.P2,tracks=p?C.P1T:C.P2T,gun=p?C.P1G:C.P2G;
- ctx.fillStyle=tracks;ctx.fillRect(0,1,3,T-2);ctx.fillRect(T-3,1,3,T-2);
- for(let i=tank.af;i<T-2;i+=4){ctx.fillRect(0,1+i,3,2);ctx.fillRect(T-3,1+i,3,2)}
- ctx.fillStyle=body;ctx.fillRect(3,3,T-6,T-4);ctx.fillStyle=gun;ctx.fillRect(T/2-1,0,2,T/2);
- if(tank.inv&&!tank.spawning){ctx.strokeStyle=C.WH;ctx.lineWidth=1;ctx.strokeRect(-1,-1,T+2,T+2)}
- ctx.restore();}
+
+// ── TILE RENDERING ───────────────────────
+function dBrick(x,y){
+ // NES-style brick pattern: two rows of bricks
+ ctx.fillStyle=NES.BR2;ctx.fillRect(x,y,T,T);
+ ctx.fillStyle=NES.BR1;
+ // Top half: 2 bricks side by side
+ ctx.fillRect(x,y,7,3);ctx.fillRect(x+8,y,8,3);
+ ctx.fillRect(x,y+4,7,3);ctx.fillRect(x+8,y+4,8,3);
+ // Bottom half: offset
+ ctx.fillRect(x,y+8,4,3);ctx.fillRect(x+5,y+8,7,3);ctx.fillRect(x+13,y+8,3,3);
+ ctx.fillRect(x,y+12,4,3);ctx.fillRect(x+5,y+12,7,3);ctx.fillRect(x+13,y+12,3,3);
+ // Mortar lines
+ ctx.fillStyle=NES.BR3;
+ ctx.fillRect(x+7,y,1,8);ctx.fillRect(x,y+3,T,1);ctx.fillRect(x,y+7,T,1);
+ ctx.fillRect(x+4,y+8,1,8);ctx.fillRect(x+12,y+8,1,8);ctx.fillRect(x,y+11,T,1);ctx.fillRect(x,y+15,T,1);
+}
+function dSteel(x,y){
+ ctx.fillStyle=NES.ST1;ctx.fillRect(x,y,T,T);
+ // Shine effect
+ ctx.fillStyle=NES.ST2;ctx.fillRect(x+1,y+1,6,6);ctx.fillRect(x+9,y+9,6,6);
+ // Dark edges
+ ctx.fillStyle=NES.ST3;
+ ctx.fillRect(x,y+T-1,T,1);ctx.fillRect(x+T-1,y,1,T);
+ ctx.fillRect(x+7,y,2,T);ctx.fillRect(x,y+7,T,2);
+}
+function dWater(x,y){
+ ctx.fillStyle=NES.WA1;ctx.fillRect(x,y,T,T);
+ const t=performance.now()/400;
+ ctx.fillStyle=NES.WA2;
+ for(let i=0;i<T;i+=3){
+  const oy=Math.floor(Math.sin(t+i*0.7)*2);
+  ctx.fillRect(x+i,y+4+oy,2,2);ctx.fillRect(x+i,y+10+oy,2,2);
+ }
+ ctx.fillStyle=NES.WA3;
+ for(let i=1;i<T;i+=5){
+  const oy=Math.floor(Math.cos(t+i*0.5)*1.5);
+  ctx.fillRect(x+i,y+7+oy,3,1);
+ }
+}
+function dForest(x,y){
+ ctx.fillStyle=NES.FO1;ctx.fillRect(x,y,T,T);
+ ctx.fillStyle=NES.FO2;
+ // Tree canopy pattern
+ ctx.fillRect(x+2,y+1,5,5);ctx.fillRect(x+9,y+1,5,5);
+ ctx.fillRect(x+5,y+6,6,5);ctx.fillRect(x+1,y+9,5,5);ctx.fillRect(x+10,y+9,5,5);
+ ctx.fillStyle=NES.FO3;
+ ctx.fillRect(x+4,y+3,2,2);ctx.fillRect(x+11,y+3,2,2);
+ ctx.fillRect(x+7,y+8,2,2);ctx.fillRect(x+3,y+11,2,2);ctx.fillRect(x+12,y+11,2,2);
+}
+function dBase(x,y,dead){
+ if(dead){
+  ctx.fillStyle=NES.BR3;ctx.fillRect(x,y,T,T);
+  ctx.fillStyle=NES.RED;
+  ctx.fillRect(x+2,y+2,3,3);ctx.fillRect(x+11,y+2,3,3);
+  ctx.fillRect(x+6,y+6,4,4);ctx.fillRect(x+2,y+11,3,3);ctx.fillRect(x+11,y+11,3,3);
+ }else{
+  // Eagle/Phoenix base icon
+  ctx.fillStyle=NES.BA1;ctx.fillRect(x,y,T,T);
+  ctx.fillStyle=NES.BA2;
+  ctx.fillRect(x+3,y+1,10,2);  // top
+  ctx.fillRect(x+5,y+3,6,2);   // neck
+  ctx.fillRect(x+3,y+5,10,4);  // body
+  ctx.fillRect(x+5,y+9,6,2);   // bottom body
+  ctx.fillRect(x+4,y+11,8,3);  // base
+  ctx.fillStyle=NES.BA3;
+  ctx.fillRect(x+6,y+6,4,2);   // center detail
+  ctx.fillRect(x+7,y+2,2,2);   // eye
+ }
+}
+
+// ── TANK RENDERING ──────────────────────
+function dTank(tank){
+ if(tank.spawning&&Math.floor(performance.now()/80)%2===0)return;
+ ctx.save();
+ const cx=tank.x+T/2,cy=tank.y+T/2;
+ ctx.translate(cx,cy);
+ ctx.rotate([0,Math.PI/2,Math.PI,-Math.PI/2][tank.dir]);
+ ctx.translate(-T/2,-T/2);
+ const p=tank.pi===0;
+ const body=p?NES.P1B:NES.P2B;
+ const tracks=p?NES.P1T:NES.P2T;
+ const gun=p?NES.P1G:NES.P2G;
+ const hl=p?NES.P1HL:NES.P2HL;
+ const tOfs=Math.floor(tank.trackOfs)%4;
+
+ // LEFT TRACK
+ ctx.fillStyle=tracks;
+ ctx.fillRect(0,0,3,T);
+ ctx.fillStyle=NES.DGRAY;
+ for(let i=tOfs;i<T;i+=4)ctx.fillRect(0,i,3,2);
+
+ // RIGHT TRACK
+ ctx.fillStyle=tracks;
+ ctx.fillRect(T-3,0,3,T);
+ ctx.fillStyle=NES.DGRAY;
+ for(let i=tOfs;i<T;i+=4)ctx.fillRect(T-3,i,3,2);
+
+ // BODY
+ ctx.fillStyle=body;
+ ctx.fillRect(3,2,T-6,T-3);
+ // Body highlight
+ ctx.fillStyle=hl;
+ ctx.fillRect(4,3,3,3);
+ // Body shadow
+ ctx.fillStyle=tracks;
+ ctx.fillRect(3,T-2,T-6,1);
+ ctx.fillRect(T-4,2,1,T-3);
+
+ // TURRET (circle area)
+ ctx.fillStyle=gun;
+ ctx.fillRect(5,5,6,6);
+ ctx.fillStyle=body;
+ ctx.fillRect(6,6,4,4);
+
+ // GUN BARREL
+ ctx.fillStyle=gun;
+ ctx.fillRect(T/2-1,0,2,6);
+ // Barrel tip
+ ctx.fillStyle=NES.GRAY;
+ ctx.fillRect(T/2-1,0,2,1);
+
+ // Shield glow
+ if(tank.inv&&!tank.spawning){
+  const blink=Math.floor(performance.now()/60)%3;
+  if(blink<2){
+   ctx.strokeStyle=blink===0?NES.WHT:NES.BLU;
+   ctx.lineWidth=1;ctx.strokeRect(-1,-1,T+2,T+2);
+  }
+ }
+ // Frozen indicator
+ if(tank.frozen){
+  ctx.globalAlpha=0.4;ctx.fillStyle=NES.BLU;ctx.fillRect(0,0,T,T);ctx.globalAlpha=1;
+ }
+ ctx.restore();
+}
+
+// ── POWERUP RENDERING ─────────────────────
+function dPowerUp(pu){
+ if(Math.floor(pu.bt/250)%2===0)return; // blink
+ const x=pu.x,y=pu.y;
+ // Background
+ ctx.fillStyle=NES.PU_BG;ctx.fillRect(x,y,T,T);
+ ctx.fillStyle=NES.PU_FG;
+ // Icon per type
+ switch(pu.type){
+  case'star':  // star shape
+   ctx.fillRect(x+6,y+2,4,3);ctx.fillRect(x+3,y+5,10,3);ctx.fillRect(x+5,y+8,6,3);ctx.fillRect(x+4,y+11,3,3);ctx.fillRect(x+9,y+11,3,3);break;
+  case'helmet': // shield
+   ctx.fillRect(x+3,y+2,10,3);ctx.fillRect(x+3,y+5,10,4);ctx.fillRect(x+5,y+9,6,3);ctx.fillRect(x+6,y+12,4,2);break;
+  case'grenade': // boom
+   ctx.fillRect(x+5,y+2,6,2);ctx.fillRect(x+3,y+4,10,8);ctx.fillRect(x+5,y+12,6,2);break;
+  case'timer': // clock
+   ctx.fillRect(x+4,y+2,8,2);ctx.fillRect(x+3,y+4,10,8);ctx.fillRect(x+4,y+12,8,2);ctx.fillStyle=NES.PU_BG;ctx.fillRect(x+6,y+6,4,4);break;
+  case'shovel': // wall
+   ctx.fillRect(x+2,y+2,12,4);ctx.fillRect(x+2,y+6,4,8);ctx.fillRect(x+10,y+6,4,8);ctx.fillRect(x+6,y+10,4,4);break;
+  case'tank': // +1
+   ctx.fillRect(x+3,y+3,4,10);ctx.fillRect(x+2,y+5,6,2);ctx.fillRect(x+10,y+4,3,8);ctx.fillRect(x+9,y+3,5,2);ctx.fillRect(x+9,y+11,5,2);break;
+ }
+}
 
 // ── CONTROLS ──────────────────────────────
-function setInput(dir,val){if(val){input.up=false;input.down=false;input.left=false;input.right=false}input[dir]=val}
-document.querySelectorAll('.d-btn').forEach(btn=>{const dir=btn.dataset.dir;
- btn.addEventListener('touchstart',e=>{e.preventDefault();setInput(dir,true)},{passive:false});
- btn.addEventListener('touchend',e=>{e.preventDefault();setInput(dir,false)},{passive:false});
- btn.addEventListener('touchcancel',()=>setInput(dir,false));
- btn.addEventListener('mousedown',()=>setInput(dir,true));btn.addEventListener('mouseup',()=>setInput(dir,false))});
+function setInput(dir,val){
+ if(val){input.up=false;input.down=false;input.left=false;input.right=false}
+ input[dir]=val;
+}
+// D-pad with visual feedback
+document.querySelectorAll('.d-btn').forEach(btn=>{
+ const dir=btn.dataset.dir;
+ const press=()=>{setInput(dir,true);btn.classList.add('pressed')};
+ const release=()=>{setInput(dir,false);btn.classList.remove('pressed')};
+ btn.addEventListener('touchstart',e=>{e.preventDefault();press()},{passive:false});
+ btn.addEventListener('touchend',e=>{e.preventDefault();release()},{passive:false});
+ btn.addEventListener('touchcancel',release);
+ btn.addEventListener('mousedown',press);
+ btn.addEventListener('mouseup',release);
+ btn.addEventListener('mouseleave',release);
+});
 const fb=document.getElementById('fire-btn');
-fb.addEventListener('touchstart',e=>{e.preventDefault();input.fire=true},{passive:false});
-fb.addEventListener('touchend',e=>{e.preventDefault();input.fire=false},{passive:false});
-fb.addEventListener('touchcancel',()=>{input.fire=false});
-fb.addEventListener('mousedown',()=>{input.fire=true});fb.addEventListener('mouseup',()=>{input.fire=false});
-document.addEventListener('keydown',e=>{if(e.key==='ArrowUp'||e.key==='w')setInput('up',true);if(e.key==='ArrowDown'||e.key==='s')setInput('down',true);
- if(e.key==='ArrowLeft'||e.key==='a')setInput('left',true);if(e.key==='ArrowRight'||e.key==='d')setInput('right',true);if(e.key===' '||e.key==='Enter')input.fire=true;
- if(e.key==='Escape')pauseGame()});
-document.addEventListener('keyup',e=>{if(e.key==='ArrowUp'||e.key==='w')input.up=false;if(e.key==='ArrowDown'||e.key==='s')input.down=false;
- if(e.key==='ArrowLeft'||e.key==='a')input.left=false;if(e.key==='ArrowRight'||e.key==='d')input.right=false;if(e.key===' '||e.key==='Enter')input.fire=false});
+fb.addEventListener('touchstart',e=>{e.preventDefault();input.fire=true;fb.classList.add('pressed')},{passive:false});
+fb.addEventListener('touchend',e=>{e.preventDefault();input.fire=false;fb.classList.remove('pressed')},{passive:false});
+fb.addEventListener('touchcancel',()=>{input.fire=false;fb.classList.remove('pressed')});
+fb.addEventListener('mousedown',()=>{input.fire=true;fb.classList.add('pressed')});
+fb.addEventListener('mouseup',()=>{input.fire=false;fb.classList.remove('pressed')});
 
-window.onBackPressed=function(){if(running&&!paused)pauseGame();else if(paused)quitGame();else{/* already in menu */}};
+// Keyboard
+document.addEventListener('keydown',e=>{
+ if(e.key==='ArrowUp'||e.key==='w')setInput('up',true);
+ if(e.key==='ArrowDown'||e.key==='s')setInput('down',true);
+ if(e.key==='ArrowLeft'||e.key==='a')setInput('left',true);
+ if(e.key==='ArrowRight'||e.key==='d')setInput('right',true);
+ if(e.key===' '||e.key==='Enter')input.fire=true;
+ if(e.key==='Escape')pauseGame();
+});
+document.addEventListener('keyup',e=>{
+ if(e.key==='ArrowUp'||e.key==='w')input.up=false;
+ if(e.key==='ArrowDown'||e.key==='s')input.down=false;
+ if(e.key==='ArrowLeft'||e.key==='a')input.left=false;
+ if(e.key==='ArrowRight'||e.key==='d')input.right=false;
+ if(e.key===' '||e.key==='Enter')input.fire=false;
+});
+
+// Resize handler
+window.addEventListener('resize',()=>{if(running)initCanvas()});
+
+window.onBackPressed=function(){if(running&&!paused)pauseGame();else if(paused)quitGame()};
 window.onGamePause=function(){if(running)pauseGame()};
 window.onGameResume=function(){};
 </script>
