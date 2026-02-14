@@ -93,19 +93,16 @@ canvas{display:block;image-rendering:pixelated;image-rendering:crisp-edges}
    <div class="logo-line"></div>
   </div>
 
-  <!-- Wallet -->
-  <div class="wallet-bar">
-   <button class="wallet-btn" id="wallet-btn" onclick="toggleWallet()">Connect Wallet</button>
-  </div>
-  <div class="wallet-info" id="wallet-info" style="display:none">
-   <span id="wallet-addr"></span> &middot; <span class="wallet-bal" id="wallet-bal">0 SOL</span>
-  </div>
-
-  <!-- Single Player -->
-  <button class="play-btn go" onclick="startSingle()">PLAY<span class="play-hint">Single Player vs Bot</span></button>
-
-  <!-- Difficulty -->
+  <!-- Settings + Difficulty -->
   <div class="card">
+   <div class="settings-row" style="padding-top:2px">
+    <span class="settings-label">Sound Effects</span>
+    <div style="display:flex;align-items:center;gap:8px">
+     <button style="background:none;border:1px solid #444;color:#888;font-size:10px;padding:3px 8px;border-radius:6px;cursor:pointer" onclick="testSound()">Test</button>
+     <div class="toggle on" id="snd-toggle" onclick="toggleSound()"></div>
+    </div>
+   </div>
+   <div style="height:1px;background:rgba(255,255,255,0.06);margin:6px 0"></div>
    <div class="card-label">Difficulty</div>
    <div class="chip-row">
     <div class="chip" id="btn-easy" onclick="setDiff('easy')">Easy</div>
@@ -128,6 +125,17 @@ canvas{display:block;image-rendering:pixelated;image-rendering:crisp-edges}
    </div>
   </div>
 
+  <!-- Single Player -->
+  <button class="play-btn go" onclick="startSingle()">PLAY<span class="play-hint">Single Player vs Bot</span></button>
+
+  <!-- Wallet -->
+  <div class="wallet-bar">
+   <button class="wallet-btn" id="wallet-btn" onclick="toggleWallet()">Connect Wallet</button>
+  </div>
+  <div class="wallet-info" id="wallet-info" style="display:none">
+   <span id="wallet-addr"></span> &middot; <span class="wallet-bal" id="wallet-bal">0 SOL</span>
+  </div>
+
   <!-- PVP -->
   <button class="play-btn pvp off" id="pvp-btn" onclick="startPVP()">PVP ONLINE<span class="play-hint" id="pvp-hint">Connect wallet to play</span></button>
 
@@ -142,16 +150,7 @@ canvas{display:block;image-rendering:pixelated;image-rendering:crisp-edges}
    </div>
   </div>
 
-  <!-- Settings -->
-  <div class="card">
-   <div class="card-label">Settings</div>
-   <div class="settings-row">
-    <span class="settings-label">Sound Effects</span>
-    <div class="toggle on" id="snd-toggle" onclick="toggleSound()"></div>
-   </div>
-  </div>
-
-  <div class="ver">v0.5.0 &mdash; Solana Seeker</div>
+  <div class="ver">v0.5.1 &mdash; Solana Seeker</div>
  </div>
 </div>
 
@@ -211,7 +210,7 @@ canvas{display:block;image-rendering:pixelated;image-rendering:crisp-edges}
 
 <script>
 // ══════════════════════════════════════════
-// BATTLE TANKS: SEEKER EDITION v0.5
+// BATTLE TANKS: SEEKER EDITION v0.5.1
 // Wallet, PVP, sounds, smart bots
 // ══════════════════════════════════════════
 
@@ -250,11 +249,14 @@ const MAPS=[
 // SOUND ENGINE — Web Audio API
 // ══════════════════════════════════════════
 const SFX={
- on:true,ctx:null,
- init(){try{this.ctx=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}},
+ on:true,ctx:null,_inited:false,
+ init(){
+  if(this._inited&&this.ctx)return;
+  try{this.ctx=new(window.AudioContext||window.webkitAudioContext)();this._inited=true}catch(e){}
+ },
  resume(){if(this.ctx&&this.ctx.state==='suspended')this.ctx.resume()},
  play(type){
-  if(!this.on||!this.ctx)return;this.resume();
+  if(!this.on)return;this.init();if(!this.ctx)return;this.resume();
   const c=this.ctx,t=c.currentTime;
   switch(type){
    case'shoot':this._noise(t,0.08,800,0.15);break;
@@ -382,7 +384,13 @@ function setBet(i){cfg.betIdx=i;
 function toggleSound(){
  SFX.on=!SFX.on;
  document.getElementById('snd-toggle').className='toggle'+(SFX.on?' on':'');
- if(SFX.on)SFX.init();
+ if(SFX.on){SFX.init();SFX.play('shoot')}
+}
+function testSound(){
+ SFX.init();SFX.on=true;
+ document.getElementById('snd-toggle').className='toggle on';
+ SFX.play('shoot');
+ setTimeout(()=>SFX.play('powerup'),200);
 }
 function showMenu(){
  document.getElementById('menu').style.display='flex';
@@ -883,6 +891,8 @@ window.addEventListener('resize',()=>{if(running)initCanvas()});
 window.onBackPressed=function(){if(running&&!paused)pauseGame();else if(paused)quitGame()};
 window.onGamePause=function(){if(running)pauseGame()};
 window.onGameResume=function(){};
+// Unlock audio on first user interaction
+document.addEventListener('touchstart',function _u(){SFX.init();SFX.resume();document.removeEventListener('touchstart',_u)},{once:true});
 </script>
 </body>
 </html>
